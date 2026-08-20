@@ -1,0 +1,100 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Search } from "lucide-react";
+import Image from "next/image";
+
+const TYPES = ["Any Type", "Apartment", "Villa", "Commercial", "Plot"];
+
+export function Hero({
+  stats,
+}: {
+  stats: { properties: number; cities: number; years: number; happyClients: number };
+}) {
+  const router = useRouter();
+  const [city, setCity] = useState("");
+  const [type, setType] = useState("Any Type");
+
+  function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (city.trim()) params.set("q", city.trim());
+    if (type !== "Any Type") params.set("type", type);
+    router.push(`/properties${params.toString() ? `?${params.toString()}` : ""}`);
+  }
+
+  return (
+    <section className="relative overflow-hidden bg-navy-950">
+      <div className="absolute inset-0">
+        <Image
+          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80"
+          alt="Modern luxury home"
+          fill
+          priority
+          className="object-cover opacity-45"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/70 via-navy-950/60 to-navy-950" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-20 sm:pt-28 md:pb-32">
+        <p className="animate-fade-up text-xs font-semibold uppercase tracking-[0.35em] text-gold-300">
+          Premium Real Estate Advisory
+        </p>
+        <h1 className="animate-fade-up mt-5 max-w-3xl font-display text-4xl font-semibold leading-tight text-white sm:text-5xl md:text-6xl">
+          Find Your Space. <span className="gold-gradient-text">Build Your Future.</span>
+        </h1>
+        <p className="animate-fade-up mt-6 max-w-xl text-base text-white/70 sm:text-lg">
+          Curated residential, commercial and rental properties — matched with expert guidance
+          at every step, from first visit to final handover.
+        </p>
+
+        <form
+          onSubmit={handleSearch}
+          className="animate-fade-up mt-10 flex w-full max-w-2xl flex-col gap-3 rounded-2xl bg-white/95 p-3 shadow-2xl shadow-black/30 backdrop-blur sm:flex-row sm:items-center"
+        >
+          <div className="flex flex-1 items-center gap-2 px-3">
+            <Search className="h-5 w-5 text-navy-900/40" />
+            <input
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder="Search by city, locality or project"
+              className="w-full bg-transparent py-2.5 text-sm text-navy-900 outline-none placeholder:text-navy-900/40"
+            />
+          </div>
+          <select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="rounded-xl border border-navy-900/10 bg-ivory-50 px-3 py-2.5 text-sm text-navy-900 outline-none sm:border-0"
+          >
+            {TYPES.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+          <button
+            type="submit"
+            className="rounded-xl bg-navy-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-navy-800"
+          >
+            Search Properties
+          </button>
+        </form>
+
+        <dl className="animate-fade-up mt-16 grid grid-cols-2 gap-8 sm:grid-cols-4">
+          {[
+            [`${stats.properties}+`, "Properties Listed"],
+            [`${stats.cities}`, "Cities Covered"],
+            [`${stats.years}`, "Years of Trust"],
+            [`${stats.happyClients.toLocaleString("en-IN")}+`, "Happy Families"],
+          ].map(([value, label]) => (
+            <div key={label}>
+              <dt className="font-display text-2xl font-semibold text-white sm:text-3xl">{value}</dt>
+              <dd className="mt-1 text-xs uppercase tracking-wide text-white/50">{label}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}

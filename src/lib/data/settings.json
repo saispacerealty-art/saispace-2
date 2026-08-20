@@ -1,0 +1,21 @@
+{
+  "siteName": "Sai Space Realty",
+  "tagline": "Find Your Space. Build Your Future.",
+  "phone": "+91 98220 11223",
+  "whatsapp": "+91 98220 11223",
+  "email": "hello@saispacerealty.com",
+  "address": "3rd Floor, Sai Chambers, Kalyani Nagar, Pune, Maharashtra 411006",
+  "officeHours": "Mon - Sat: 10:00 AM - 7:00 PM",
+  "heroTitle": "Find Your Dream",
+  "heroAccent": "HOME TODAY",
+  "heroTagline": "Discover premium properties across India that match your lifestyle, your family and your budget.",
+  "aboutText": "Sai Space Realty is a trusted real estate company dedicated to helping you find the right property, backed by honest advice and meticulous care.",
+  "happyClients": 1400,
+  "yearsExperience": 9,
+  "socials": {
+    "facebook": "https://facebook.com/saispacerealty",
+    "instagram": "https://instagram.com/saispacerealty",
+    "linkedin": "https://linkedin.com/company/saispacerealty",
+    "youtube": "https://youtube.com/@saispacerealty"
+  }
+}

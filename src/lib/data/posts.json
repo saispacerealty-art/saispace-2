@@ -1,0 +1,32 @@
+[
+  {
+    "id": "b1",
+    "title": "Buying Your First Home in Pune: A Step-by-Step Checklist",
+    "slug": "buying-your-first-home-in-pune-checklist",
+    "category": "Buyer Guide",
+    "excerpt": "From budgeting to registration, here's everything a first-time homebuyer in Pune needs to know before signing on the dotted line.",
+    "content": "Buying your first home is exciting, but it's easy to feel overwhelmed by the number of steps involved. Start by setting a realistic budget that accounts for the down payment, registration charges, and a buffer for interiors. Get your home loan pre-approved so you know exactly what you can afford before you start visiting properties.\n\nNext, shortlist localities based on your commute, schools, and future resale potential rather than price alone. Once you find a property you like, verify the title documents, RERA registration, and occupancy certificate before making any payment. Finally, work with a trusted advisor to negotiate terms and handle the registration process smoothly.",
+    "coverImage": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80",
+    "publishedAt": "2026-03-12T09:00:00.000Z"
+  },
+  {
+    "id": "b2",
+    "title": "Wakad vs Baner: Where Should You Invest in 2026?",
+    "slug": "wakad-vs-baner-where-to-invest-2026",
+    "category": "Market Insight",
+    "excerpt": "Both micro-markets are booming, but they suit different kinds of buyers. Here's how to decide which one fits your goals.",
+    "content": "Wakad and Baner are two of Pune's most sought-after residential corridors, each with a distinct character. Wakad offers relatively better price points and strong rental demand driven by its proximity to Hinjewadi IT Park, making it attractive for investors chasing yield.\n\nBaner, on the other hand, commands a premium thanks to its established social infrastructure, wider roads, and proximity to central Pune — better suited to end-users looking for long-term appreciation. Consider your investment horizon and whether you're optimizing for rental income or capital growth before choosing between the two.",
+    "coverImage": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+    "publishedAt": "2026-02-28T09:00:00.000Z"
+  },
+  {
+    "id": "b3",
+    "title": "Understanding RERA and What It Protects You From",
+    "slug": "understanding-rera-what-it-protects-you-from",
+    "category": "Legal",
+    "excerpt": "RERA has changed the way real estate transactions work in India. Here's a plain-language guide to what it means for you.",
+    "content": "The Real Estate (Regulation and Development) Act, or RERA, was introduced to bring transparency and accountability to the real estate sector. Every project above a certain size must be registered with the state RERA authority, which publishes the project's approvals, timelines, and promoter details publicly.\n\nFor buyers, this means you can verify a project's legitimacy before investing, hold developers accountable for delays, and access a formal grievance redressal mechanism. Always check a project's RERA registration number and cross-verify it on the official state RERA website before making a booking.",
+    "coverImage": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
+    "publishedAt": "2026-02-09T09:00:00.000Z"
+  }
+]

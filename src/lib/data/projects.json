@@ -1,0 +1,35 @@
+[
+  {
+    "id": "pr1",
+    "name": "Sai Aurum Heights",
+    "slug": "sai-aurum-heights",
+    "location": "Wakad, Pune",
+    "detail": "2 & 3 BHK residences",
+    "status": "Under Construction",
+    "description": "A landmark residential tower rising in Wakad, offering thoughtfully planned 2 & 3 BHK homes with resort-style amenities, landscaped courtyards, and excellent connectivity to the IT corridor. Possession expected in phases starting late 2027.",
+    "image": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80",
+    "createdAt": "2026-04-10T09:00:00.000Z"
+  },
+  {
+    "id": "pr2",
+    "name": "Space One Business Park",
+    "slug": "space-one-business-park",
+    "location": "Hinjewadi Phase 2, Pune",
+    "detail": "Grade-A office spaces from 800 - 5,000 sq.ft",
+    "status": "Ready to Move",
+    "description": "A Grade-A commercial development in the heart of Hinjewadi's IT hub, offering column-free office floors, dedicated parking, and round-the-clock power backup. Ready for immediate fit-out and occupation.",
+    "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1400&q=80",
+    "createdAt": "2026-02-15T09:00:00.000Z"
+  },
+  {
+    "id": "pr3",
+    "name": "Sai Green Acres",
+    "slug": "sai-green-acres",
+    "location": "Chakan Road, Pune",
+    "detail": "RERA-approved residential plots from 2,000 sq.ft",
+    "status": "New Launch",
+    "description": "An upcoming gated plotted development along Chakan Road, designed for those who want to build their dream home from the ground up. Wide roads, underground utilities, and a dedicated central park.",
+    "image": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1400&q=80",
+    "createdAt": "2026-07-05T09:00:00.000Z"
+  }
+]

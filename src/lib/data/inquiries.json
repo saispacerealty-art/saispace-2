@@ -1,0 +1,35 @@
+[
+  {
+    "id": "i1",
+    "name": "Ananya Deshpande",
+    "email": "ananya.d@example.com",
+    "phone": "+91 98765 43210",
+    "message": "Interested in a site visit for the Skyline Vista Penthouse this weekend. Please share availability.",
+    "propertyId": "p1",
+    "propertyTitle": "Skyline Vista Penthouse",
+    "status": "new",
+    "createdAt": "2026-08-18T11:20:00.000Z"
+  },
+  {
+    "id": "i2",
+    "name": "Rohit Malhotra",
+    "email": "rohit.m@example.com",
+    "phone": "+91 91234 56780",
+    "message": "Can you share the floor plan and RERA details for The Regency Villa?",
+    "propertyId": "p2",
+    "propertyTitle": "The Regency Villa",
+    "status": "contacted",
+    "createdAt": "2026-08-15T08:05:00.000Z"
+  },
+  {
+    "id": "i3",
+    "name": "Sana Iyer",
+    "email": "sana.iyer@example.com",
+    "phone": "+91 90909 80808",
+    "message": "Looking for a 3BHK rental in Baner under 70k/month, is Willowbrook still available?",
+    "propertyId": "p4",
+    "propertyTitle": "Willowbrook 3BHK Residence",
+    "status": "new",
+    "createdAt": "2026-08-19T15:40:00.000Z"
+  }
+]
