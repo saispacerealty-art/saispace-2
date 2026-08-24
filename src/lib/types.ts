@@ -44,6 +44,7 @@ export type SiteSettings = {
   email: string;
   address: string;
   officeHours: string;
+  heroEyebrow: string;
   heroTitle: string;
   heroAccent: string;
   heroTagline: string;
@@ -81,4 +82,58 @@ export type BlogPost = {
   content: string;
   coverImage: string;
   publishedAt: string;
+};
+
+export type Testimonial = { id: string; name: string; role: string; quote: string };
+
+export type WhyChooseUsPoint = { id: string; icon: string; title: string; description: string };
+
+export type PropertyTypeCard = { id: string; label: string; type: PropertyType; image: string };
+
+export type ValueItem = { id: string; icon: string; title: string; description: string };
+
+export type TeamMember = { id: string; name: string; role: string; photo: string };
+
+export type ServiceItem = {
+  id: string;
+  icon: string;
+  title: string;
+  description: string;
+  points: string[];
+};
+
+export type NavLink = { id: string; href: string; label: string };
+
+export type ContentMap = {
+  testimonials: Testimonial;
+  whyChooseUs: WhyChooseUsPoint;
+  propertyTypes: PropertyTypeCard;
+  values: ValueItem;
+  team: TeamMember;
+  services: ServiceItem;
+  navLinks: NavLink;
+};
+
+export type ContentSection = keyof ContentMap;
+
+export type PageCopy = {
+  ctaEyebrow: string;
+  ctaTitle: string;
+  ctaSubcopy: string;
+  ctaPrimaryLabel: string;
+  ctaSecondaryLabel: string;
+  aboutHeroEyebrow: string;
+  aboutHeroTitle: string;
+  aboutHeroAccent: string;
+  aboutHeroText: string;
+  aboutMissionEyebrow: string;
+  aboutMissionTitle: string;
+  aboutMissionParagraph1: string;
+  aboutMissionParagraph2: string;
+  servicesHeroEyebrow: string;
+  servicesHeroTitle: string;
+  servicesHeroText: string;
+  contactHeroEyebrow: string;
+  contactHeroTitle: string;
+  contactHeroText: string;
 };

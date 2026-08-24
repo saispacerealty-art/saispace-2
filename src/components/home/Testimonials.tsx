@@ -1,27 +1,7 @@
 import { Star } from "lucide-react";
+import type { Testimonial } from "@/lib/types";
 
-const TESTIMONIALS = [
-  {
-    name: "Priya & Arjun Mehta",
-    role: "Bought a villa in Koregaon Park",
-    quote:
-      "Sai Space Realty made what felt like an overwhelming decision genuinely simple. Every visit, every document, every follow-up — handled with real care.",
-  },
-  {
-    name: "Karan Suri",
-    role: "Leased office space in Andheri East",
-    quote:
-      "Their market knowledge saved us weeks of searching. We found the right office at the right price within our first shortlist.",
-  },
-  {
-    name: "Neha Kulkarni",
-    role: "Rented an apartment in Baner",
-    quote:
-      "Transparent, responsive, and never pushy. They understood exactly what we needed and never wasted our time on the wrong listings.",
-  },
-];
-
-export function Testimonials() {
+export function Testimonials({ testimonials }: { testimonials: Testimonial[] }) {
   return (
     <section className="mx-auto max-w-7xl px-6 py-20">
       <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-600">Client Stories</p>
@@ -30,8 +10,8 @@ export function Testimonials() {
       </h2>
 
       <div className="mt-12 grid gap-6 lg:grid-cols-3">
-        {TESTIMONIALS.map((t) => (
-          <figure key={t.name} className="flex flex-col rounded-2xl bg-navy-900 p-7 text-white">
+        {testimonials.map((t) => (
+          <figure key={t.id} className="flex flex-col rounded-2xl bg-navy-900 p-7 text-white">
             <div className="flex gap-1 text-gold-400">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="h-4 w-4 fill-current" />

@@ -3,14 +3,15 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Search } from "lucide-react";
-import Image from "next/image";
 
 const TYPES = ["Any Type", "Apartment", "Villa", "Commercial", "Plot"];
 
 export function Hero({
   stats,
+  copy,
 }: {
   stats: { properties: number; cities: number; years: number; happyClients: number };
+  copy: { eyebrow: string; title: string; accent: string; tagline: string };
 }) {
   const router = useRouter();
   const [city, setCity] = useState("");
@@ -27,27 +28,27 @@ export function Hero({
   return (
     <section className="relative overflow-hidden bg-navy-950">
       <div className="absolute inset-0">
-        <Image
-          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80"
-          alt="Modern luxury home"
-          fill
-          priority
-          className="object-cover opacity-45"
-        />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80"
+          className="h-full w-full object-cover opacity-45"
+        >
+          <source src="/videos/hero-background.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-navy-950/70 via-navy-950/60 to-navy-950" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-20 sm:pt-28 md:pb-32">
         <p className="animate-fade-up text-xs font-semibold uppercase tracking-[0.35em] text-gold-300">
-          Premium Real Estate Advisory
+          {copy.eyebrow}
         </p>
         <h1 className="animate-fade-up mt-5 max-w-3xl font-display text-4xl font-semibold leading-tight text-white sm:text-5xl md:text-6xl">
-          Find Your Space. <span className="gold-gradient-text">Build Your Future.</span>
+          {copy.title} <span className="gold-gradient-text">{copy.accent}</span>
         </h1>
-        <p className="animate-fade-up mt-6 max-w-xl text-base text-white/70 sm:text-lg">
-          Curated residential, commercial and rental properties — matched with expert guidance
-          at every step, from first visit to final handover.
-        </p>
+        <p className="animate-fade-up mt-6 max-w-xl text-base text-white/70 sm:text-lg">{copy.tagline}</p>
 
         <form
           onSubmit={handleSearch}

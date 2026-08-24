@@ -58,6 +58,10 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
         <h2 className="font-display text-lg font-semibold text-navy-900">Homepage Hero</h2>
         <p className="mt-1 text-sm text-navy-900/50">Controls the headline shown at the top of your homepage.</p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div className="sm:col-span-2">
+            <label className={labelClass}>Hero Eyebrow</label>
+            <input value={form.heroEyebrow} onChange={(e) => update("heroEyebrow", e.target.value)} className={inputClass} />
+          </div>
           <div>
             <label className={labelClass}>Hero Title</label>
             <input value={form.heroTitle} onChange={(e) => update("heroTitle", e.target.value)} className={inputClass} />

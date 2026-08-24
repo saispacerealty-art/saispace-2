@@ -1,0 +1,231 @@
+{
+  "testimonials": [
+    {
+      "id": "t1",
+      "name": "Priya & Arjun Mehta",
+      "role": "Bought a villa in Koregaon Park",
+      "quote": "Sai Space Realty made what felt like an overwhelming decision genuinely simple. Every visit, every document, every follow-up — handled with real care."
+    },
+    {
+      "id": "t2",
+      "name": "Karan Suri",
+      "role": "Leased office space in Andheri East",
+      "quote": "Their market knowledge saved us weeks of searching. We found the right office at the right price within our first shortlist."
+    },
+    {
+      "id": "t3",
+      "name": "Neha Kulkarni",
+      "role": "Rented an apartment in Baner",
+      "quote": "Transparent, responsive, and never pushy. They understood exactly what we needed and never wasted our time on the wrong listings."
+    }
+  ],
+  "whyChooseUs": [
+    {
+      "id": "w1",
+      "icon": "Search",
+      "title": "Curated Listings",
+      "description": "Every property is personally verified for title clarity, quality, and fair pricing before it reaches you."
+    },
+    {
+      "id": "w2",
+      "icon": "Handshake",
+      "title": "End-to-End Support",
+      "description": "From shortlisting to paperwork and handover, our advisors stay with you through the entire journey."
+    },
+    {
+      "id": "w3",
+      "icon": "ShieldCheck",
+      "title": "Transparent Dealings",
+      "description": "No hidden charges, no surprises — just clear documentation and honest advice at every step."
+    },
+    {
+      "id": "w4",
+      "icon": "Building2",
+      "title": "Local Market Expertise",
+      "description": "Deep on-ground knowledge across every micro-market we operate in, updated in real time."
+    }
+  ],
+  "propertyTypes": [
+    {
+      "id": "pt1",
+      "label": "Apartments",
+      "type": "Apartment",
+      "image": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      "id": "pt2",
+      "label": "Villas",
+      "type": "Villa",
+      "image": "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      "id": "pt3",
+      "label": "Commercial",
+      "type": "Commercial",
+      "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      "id": "pt4",
+      "label": "Plots & Land",
+      "type": "Plot",
+      "image": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80"
+    }
+  ],
+  "values": [
+    {
+      "id": "v1",
+      "icon": "Target",
+      "title": "Clarity First",
+      "description": "We simplify every transaction with straight answers and clear documentation."
+    },
+    {
+      "id": "v2",
+      "icon": "Handshake",
+      "title": "Client-Centred",
+      "description": "Your goals shape every recommendation we make — never the other way around."
+    },
+    {
+      "id": "v3",
+      "icon": "Award",
+      "title": "Proven Track Record",
+      "description": "Nine years and 1,400+ families served across residential and commercial real estate."
+    },
+    {
+      "id": "v4",
+      "icon": "Users",
+      "title": "Community Rooted",
+      "description": "Deep local relationships that translate into better access and better deals."
+    }
+  ],
+  "team": [
+    {
+      "id": "tm1",
+      "name": "Sai Prakash Rane",
+      "role": "Founder & Principal Broker",
+      "photo": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+      "id": "tm2",
+      "name": "Meera Kulkarni",
+      "role": "Head of Residential Sales",
+      "photo": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+      "id": "tm3",
+      "name": "Aditya Verma",
+      "role": "Commercial Leasing Lead",
+      "photo": "https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=400&q=80"
+    },
+    {
+      "id": "tm4",
+      "name": "Ritika Shah",
+      "role": "Client Relations Manager",
+      "photo": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80"
+    }
+  ],
+  "services": [
+    {
+      "id": "s1",
+      "icon": "Home",
+      "title": "Buying Assistance",
+      "description": "Personalized property shortlisting, site visits, and negotiation support so you find the right home at the right price.",
+      "points": [
+        "Curated shortlists",
+        "Accompanied site visits",
+        "Price negotiation"
+      ]
+    },
+    {
+      "id": "s2",
+      "icon": "Megaphone",
+      "title": "Selling & Marketing",
+      "description": "Professional listing photography, targeted marketing, and qualified buyer introductions to sell faster and for more.",
+      "points": [
+        "Professional photography",
+        "Multi-channel marketing",
+        "Qualified buyer leads"
+      ]
+    },
+    {
+      "id": "s3",
+      "icon": "KeyRound",
+      "title": "Rental Management",
+      "description": "From tenant sourcing to lease agreements, we handle the details so your rental income stays hassle-free.",
+      "points": [
+        "Tenant screening",
+        "Lease documentation",
+        "Rent collection support"
+      ]
+    },
+    {
+      "id": "s4",
+      "icon": "ScrollText",
+      "title": "Legal & Documentation",
+      "description": "Title verification, RERA checks, and registration support to keep every transaction fully compliant.",
+      "points": [
+        "Title & RERA verification",
+        "Registration assistance",
+        "Documentation review"
+      ]
+    },
+    {
+      "id": "s5",
+      "icon": "LineChart",
+      "title": "Investment Advisory",
+      "description": "Data-backed insights on emerging micro-markets to help you make confident, high-return investment decisions.",
+      "points": [
+        "Market trend analysis",
+        "ROI projections",
+        "Portfolio planning"
+      ]
+    },
+    {
+      "id": "s6",
+      "icon": "Landmark",
+      "title": "Home Loan Assistance",
+      "description": "We coordinate with leading banks and NBFCs to help you secure the best rates with minimal paperwork.",
+      "points": [
+        "Bank & NBFC tie-ups",
+        "Eligibility guidance",
+        "Paperwork support"
+      ]
+    }
+  ],
+  "navLinks": [
+    {
+      "id": "n1",
+      "href": "/",
+      "label": "Home"
+    },
+    {
+      "id": "n2",
+      "href": "/properties",
+      "label": "Properties"
+    },
+    {
+      "id": "n3",
+      "href": "/about",
+      "label": "About Us"
+    },
+    {
+      "id": "n4",
+      "href": "/services",
+      "label": "Services"
+    },
+    {
+      "id": "n5",
+      "href": "/projects",
+      "label": "Projects"
+    },
+    {
+      "id": "n6",
+      "href": "/blog",
+      "label": "Blog"
+    },
+    {
+      "id": "n7",
+      "href": "/contact",
+      "label": "Contact Us"
+    }
+  ]
+}

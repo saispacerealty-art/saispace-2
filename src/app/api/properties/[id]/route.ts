@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { repo } from "@/lib/repository";
 import { isAdminRequest } from "@/lib/require-admin";
 
@@ -23,6 +24,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     areaSqft: body.areaSqft !== undefined ? Number(body.areaSqft) : undefined,
   });
   if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  revalidatePath("/");
+  revalidatePath("/properties");
+  revalidatePath("/properties/[slug]", "page");
+
   return NextResponse.json(updated);
 }
 
@@ -33,5 +39,10 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   const { id } = await params;
   const ok = await repo.deleteProperty(id);
   if (!ok) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  revalidatePath("/");
+  revalidatePath("/properties");
+  revalidatePath("/properties/[slug]", "page");
+
   return NextResponse.json({ ok: true });
 }

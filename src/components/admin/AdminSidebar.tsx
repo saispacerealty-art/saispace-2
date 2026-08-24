@@ -15,6 +15,10 @@ import {
   Menu,
   X,
   ExternalLink,
+  Home,
+  Users,
+  Wrench,
+  Compass,
 } from "lucide-react";
 import clsx from "clsx";
 import { LogoMark } from "@/components/Logo";
@@ -25,12 +29,21 @@ const NAV_GROUPS: { label: string; links: { href: string; label: string; icon: t
     links: [{ href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true }],
   },
   {
-    label: "Content",
+    label: "Listings",
     links: [
       { href: "/admin/properties", label: "Properties", icon: Building2 },
       { href: "/admin/projects", label: "Projects", icon: FolderKanban },
       { href: "/admin/blog", label: "Blog Posts", icon: Newspaper },
-      { href: "/admin/settings", label: "Site Content", icon: Settings },
+    ],
+  },
+  {
+    label: "Site Content",
+    links: [
+      { href: "/admin/content/homepage", label: "Homepage", icon: Home },
+      { href: "/admin/content/about", label: "About Page", icon: Users },
+      { href: "/admin/content/services", label: "Services Page", icon: Wrench },
+      { href: "/admin/content/navigation", label: "Navigation", icon: Compass },
+      { href: "/admin/settings", label: "General Settings", icon: Settings },
     ],
   },
   {
@@ -85,8 +98,8 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="flex h-full flex-col bg-navy-950 py-6">
       <div className="flex items-center gap-3 px-5">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-          <LogoMark className="h-6 w-6" />
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-ivory-100 shadow-sm">
+          <LogoMark className="h-7 w-7" />
         </span>
         <div className="leading-tight">
           <p className="font-display text-sm font-semibold text-white">Sai Space Realty</p>
@@ -130,8 +143,8 @@ export function AdminSidebar() {
 
       <div className="flex items-center justify-between border-b border-navy-900/10 bg-navy-950 px-4 py-3 lg:hidden">
         <div className="flex items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10">
-            <LogoMark className="h-5 w-5" />
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-ivory-100 shadow-sm">
+            <LogoMark className="h-6 w-6" />
           </span>
           <span className="font-display text-sm font-semibold text-white">Admin Console</span>
         </div>

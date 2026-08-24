@@ -4,8 +4,8 @@ import { repo } from "@/lib/repository";
 import { isAdminRequest } from "@/lib/require-admin";
 
 export async function GET() {
-  const settings = await repo.getSettings();
-  return NextResponse.json(settings);
+  const copy = await repo.getPageCopy();
+  return NextResponse.json(copy);
 }
 
 export async function PUT(req: NextRequest) {
@@ -13,9 +13,12 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const body = await req.json();
-  const updated = await repo.updateSettings(body);
+  const updated = await repo.updatePageCopy(body);
 
-  revalidatePath("/", "layout");
+  revalidatePath("/");
+  revalidatePath("/about");
+  revalidatePath("/services");
+  revalidatePath("/contact");
 
   return NextResponse.json(updated);
 }

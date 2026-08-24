@@ -80,9 +80,9 @@ export function LoginScreen() {
           <motion.span
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white/10 backdrop-blur"
+            className="flex h-20 w-20 items-center justify-center rounded-2xl bg-ivory-100 shadow-lg"
           >
-            <LogoMark className="h-12 w-12" />
+            <LogoMark className="h-14 w-14" />
           </motion.span>
           <h2 className="mt-8 font-display text-2xl font-semibold text-white">Sai Space Realty</h2>
           <p className="mt-1 text-xs font-semibold uppercase tracking-[0.35em] text-gold-300">Admin Console</p>
@@ -112,8 +112,8 @@ export function LoginScreen() {
           className="w-full max-w-sm"
         >
           <div className="mb-8 flex justify-center lg:hidden">
-            <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-navy-900">
-              <LogoMark className="h-10 w-10" />
+            <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-ivory-100 shadow-sm ring-1 ring-navy-900/10">
+              <LogoMark className="h-11 w-11" />
             </span>
           </div>
 

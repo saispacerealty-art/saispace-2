@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { repo } from "@/lib/repository";
 import { isAdminRequest } from "@/lib/require-admin";
 
@@ -24,6 +25,9 @@ export async function POST(req: NextRequest) {
     content: body.content ?? "",
     coverImage: body.coverImage ?? "",
   });
+
+  revalidatePath("/");
+  revalidatePath("/blog");
 
   return NextResponse.json(post, { status: 201 });
 }

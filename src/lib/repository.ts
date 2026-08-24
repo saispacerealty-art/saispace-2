@@ -1,7 +1,16 @@
 import "server-only";
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { BlogPost, Inquiry, Project, Property, SiteSettings } from "./types";
+import type {
+  BlogPost,
+  ContentMap,
+  ContentSection,
+  Inquiry,
+  PageCopy,
+  Project,
+  Property,
+  SiteSettings,
+} from "./types";
 
 /**
  * Data access is isolated behind this interface so the JSON-file store used
@@ -34,6 +43,21 @@ export interface DataRepository {
   createPost(input: Omit<BlogPost, "id" | "publishedAt">): Promise<BlogPost>;
   updatePost(id: string, input: Partial<BlogPost>): Promise<BlogPost | null>;
   deletePost(id: string): Promise<boolean>;
+
+  listContent<K extends ContentSection>(section: K): Promise<ContentMap[K][]>;
+  createContentItem<K extends ContentSection>(
+    section: K,
+    input: Omit<ContentMap[K], "id">
+  ): Promise<ContentMap[K]>;
+  updateContentItem<K extends ContentSection>(
+    section: K,
+    id: string,
+    input: Partial<ContentMap[K]>
+  ): Promise<ContentMap[K] | null>;
+  deleteContentItem(section: ContentSection, id: string): Promise<boolean>;
+
+  getPageCopy(): Promise<PageCopy>;
+  updatePageCopy(input: Partial<PageCopy>): Promise<PageCopy>;
 }
 
 const DATA_DIR = path.join(process.cwd(), "src", "lib", "data");
@@ -42,6 +66,8 @@ const INQUIRIES_FILE = path.join(DATA_DIR, "inquiries.json");
 const SETTINGS_FILE = path.join(DATA_DIR, "settings.json");
 const PROJECTS_FILE = path.join(DATA_DIR, "projects.json");
 const POSTS_FILE = path.join(DATA_DIR, "posts.json");
+const CONTENT_FILE = path.join(DATA_DIR, "content.json");
+const PAGE_COPY_FILE = path.join(DATA_DIR, "page-copy.json");
 
 async function readJson<T>(file: string): Promise<T> {
   const raw = await fs.readFile(file, "utf-8");
@@ -241,6 +267,58 @@ class JsonFileRepository implements DataRepository {
     if (next.length === items.length) return false;
     await writeJson(POSTS_FILE, next);
     return true;
+  }
+
+  async listContent<K extends ContentSection>(section: K): Promise<ContentMap[K][]> {
+    const all = await readJson<Record<ContentSection, { id: string }[]>>(CONTENT_FILE);
+    return all[section] as ContentMap[K][];
+  }
+
+  async createContentItem<K extends ContentSection>(
+    section: K,
+    input: Omit<ContentMap[K], "id">
+  ): Promise<ContentMap[K]> {
+    const all = await readJson<Record<ContentSection, { id: string }[]>>(CONTENT_FILE);
+    const item = { ...input, id: makeId() } as ContentMap[K] & { id: string };
+    all[section] = [...all[section], item];
+    await writeJson(CONTENT_FILE, all);
+    return item;
+  }
+
+  async updateContentItem<K extends ContentSection>(
+    section: K,
+    id: string,
+    input: Partial<ContentMap[K]>
+  ): Promise<ContentMap[K] | null> {
+    const all = await readJson<Record<ContentSection, { id: string }[]>>(CONTENT_FILE);
+    const items = all[section];
+    const idx = items.findIndex((item) => item.id === id);
+    if (idx === -1) return null;
+    const updated = { ...items[idx], ...input, id: items[idx].id };
+    items[idx] = updated;
+    await writeJson(CONTENT_FILE, all);
+    return updated as ContentMap[K];
+  }
+
+  async deleteContentItem(section: ContentSection, id: string): Promise<boolean> {
+    const all = await readJson<Record<ContentSection, { id: string }[]>>(CONTENT_FILE);
+    const items = all[section];
+    const next = items.filter((item) => item.id !== id);
+    if (next.length === items.length) return false;
+    all[section] = next;
+    await writeJson(CONTENT_FILE, all);
+    return true;
+  }
+
+  async getPageCopy(): Promise<PageCopy> {
+    return readJson<PageCopy>(PAGE_COPY_FILE);
+  }
+
+  async updatePageCopy(input: Partial<PageCopy>): Promise<PageCopy> {
+    const current = await readJson<PageCopy>(PAGE_COPY_FILE);
+    const updated = { ...current, ...input };
+    await writeJson(PAGE_COPY_FILE, updated);
+    return updated;
   }
 }
 

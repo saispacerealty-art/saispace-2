@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage() {
-  const settings = await repo.getSettings();
+  const [settings, copy] = await Promise.all([repo.getSettings(), repo.getPageCopy()]);
 
   const cards = [
     { icon: MapPin, label: "Visit Us", value: settings.address },
@@ -22,13 +22,9 @@ export default async function ContactPage() {
     <>
       <section className="bg-navy-950 py-16">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-300">Get in Touch</p>
-          <h1 className="mt-3 font-display text-3xl font-semibold text-white sm:text-4xl">
-            We&apos;d love to hear from you
-          </h1>
-          <p className="mt-3 max-w-xl text-sm text-white/60">
-            Whether you have a property in mind or just want to explore your options, our team is one message away.
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-300">{copy.contactHeroEyebrow}</p>
+          <h1 className="mt-3 font-display text-3xl font-semibold text-white sm:text-4xl">{copy.contactHeroTitle}</h1>
+          <p className="mt-3 max-w-xl text-sm text-white/60">{copy.contactHeroText}</p>
         </div>
       </section>
 

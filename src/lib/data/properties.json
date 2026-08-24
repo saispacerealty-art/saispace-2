@@ -14,7 +14,14 @@
     "bathrooms": 4,
     "areaSqft": 3200,
     "description": "A sun-drenched penthouse crowning a premium riverfront tower, featuring floor-to-ceiling glazing, a private terrace, and panoramic skyline views. Finished with imported marble flooring, a chef's kitchen, and smart-home automation throughout.",
-    "features": ["Private terrace", "Smart home", "Modular kitchen", "3 covered parking", "Clubhouse access", "24x7 security"],
+    "features": [
+      "Private terrace",
+      "Smart home",
+      "Modular kitchen",
+      "3 covered parking",
+      "Clubhouse access",
+      "24x7 security"
+    ],
     "images": [
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=80",
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80",
@@ -38,7 +45,14 @@
     "bathrooms": 6,
     "areaSqft": 5400,
     "description": "An architect-designed independent villa set on a lush corner plot, blending contemporary lines with warm natural materials. Features a private pool, landscaped garden, home theatre, and a dedicated staff wing.",
-    "features": ["Private pool", "Landscaped garden", "Home theatre", "Staff quarters", "4 car garage", "Solar power"],
+    "features": [
+      "Private pool",
+      "Landscaped garden",
+      "Home theatre",
+      "Staff quarters",
+      "4 car garage",
+      "Solar power"
+    ],
     "images": [
       "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1400&q=80",
       "https://images.unsplash.com/photo-1560184897-ae75f418493e?auto=format&fit=crop&w=1400&q=80",
@@ -62,7 +76,13 @@
     "bathrooms": 2,
     "areaSqft": 1850,
     "description": "Grade-A office suite in a landmark business park with double-height lobby, high-speed elevators, and column-free floor plates ready for fit-out. Excellent connectivity to the metro and airport.",
-    "features": ["Column-free layout", "Central air conditioning", "Metro connectivity", "Power backup", "Ample parking"],
+    "features": [
+      "Column-free layout",
+      "Central air conditioning",
+      "Metro connectivity",
+      "Power backup",
+      "Ample parking"
+    ],
     "images": [
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1400&q=80",
       "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1400&q=80"
@@ -85,7 +105,13 @@
     "bathrooms": 3,
     "areaSqft": 1620,
     "description": "A bright, move-in-ready 3BHK in a gated township with resort-style amenities. Ideal for families, close to top schools, hospitals, and the IT corridor.",
-    "features": ["Gated township", "Swimming pool", "Kids play area", "Gymnasium", "Covered parking"],
+    "features": [
+      "Gated township",
+      "Swimming pool",
+      "Kids play area",
+      "Gymnasium",
+      "Covered parking"
+    ],
     "images": [
       "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1400&q=80",
       "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1400&q=80",
@@ -109,7 +135,13 @@
     "bathrooms": 0,
     "areaSqft": 4000,
     "description": "A clear-titled, RERA-approved residential plot in a rapidly appreciating layout, ready for immediate construction. Wide approach roads and underground utilities already in place.",
-    "features": ["RERA approved", "Clear title", "Underground utilities", "Gated layout", "Corner plot"],
+    "features": [
+      "RERA approved",
+      "Clear title",
+      "Underground utilities",
+      "Gated layout",
+      "Corner plot"
+    ],
     "images": [
       "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1400&q=80",
       "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?auto=format&fit=crop&w=1400&q=80"
@@ -132,7 +164,13 @@
     "bathrooms": 3,
     "areaSqft": 1980,
     "description": "Sea-facing 3BHK residence in one of Worli's most sought-after addresses, offering uninterrupted ocean views, a private deck, and five-star building amenities.",
-    "features": ["Sea view", "Private deck", "Infinity pool", "Concierge service", "Valet parking"],
+    "features": [
+      "Sea view",
+      "Private deck",
+      "Infinity pool",
+      "Concierge service",
+      "Valet parking"
+    ],
     "images": [
       "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1400&q=80",
       "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1400&q=80"
@@ -155,7 +193,13 @@
     "bathrooms": 4,
     "areaSqft": 2900,
     "description": "Contemporary row villa in a boutique gated community minutes from the financial district. Double-height living room, private garden, and rooftop terrace.",
-    "features": ["Rooftop terrace", "Private garden", "Modular kitchen", "Gated community", "EV charging point"],
+    "features": [
+      "Rooftop terrace",
+      "Private garden",
+      "Modular kitchen",
+      "Gated community",
+      "EV charging point"
+    ],
     "images": [
       "https://images.unsplash.com/photo-1571055107559-3e67626fa8be?auto=format&fit=crop&w=1400&q=80",
       "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1400&q=80"
@@ -178,7 +222,12 @@
     "bathrooms": 1,
     "areaSqft": 1200,
     "description": "High-footfall retail unit on Indiranagar's premier high street, with double frontage and a flexible open floor plan suited to flagship stores or F&B.",
-    "features": ["High street frontage", "Flexible layout", "Loading access", "24x7 access"],
+    "features": [
+      "High street frontage",
+      "Flexible layout",
+      "Loading access",
+      "24x7 access"
+    ],
     "images": [
       "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1400&q=80",
       "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1400&q=80"

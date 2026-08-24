@@ -1,30 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { PropertyTypeCard } from "@/lib/types";
 
-const TYPES = [
-  {
-    label: "Apartments",
-    href: "/properties?type=Apartment",
-    img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    label: "Villas",
-    href: "/properties?type=Villa",
-    img: "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    label: "Commercial",
-    href: "/properties?type=Commercial",
-    img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    label: "Plots & Land",
-    href: "/properties?type=Plot",
-    img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80",
-  },
-];
-
-export function PropertyTypes() {
+export function PropertyTypes({ types }: { types: PropertyTypeCard[] }) {
   return (
     <section className="bg-ivory-100 py-20">
       <div className="mx-auto max-w-7xl px-6">
@@ -34,14 +12,14 @@ export function PropertyTypes() {
         </h2>
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {TYPES.map((t) => (
+          {types.map((t) => (
             <Link
-              key={t.label}
-              href={t.href}
+              key={t.id}
+              href={`/properties?type=${t.type}`}
               className="group relative h-64 overflow-hidden rounded-2xl"
             >
               <Image
-                src={t.img}
+                src={t.image}
                 alt={t.label}
                 fill
                 sizes="(min-width: 1024px) 280px, 100vw"

@@ -2,9 +2,17 @@ import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Logo } from "./Logo";
 import { FacebookIcon, InstagramIcon, LinkedinIcon, YoutubeIcon } from "./SocialIcons";
-import type { SiteSettings } from "@/lib/types";
+import type { NavLink, PropertyTypeCard, SiteSettings } from "@/lib/types";
 
-export function Footer({ settings }: { settings: SiteSettings }) {
+export function Footer({
+  settings,
+  navLinks,
+  propertyTypes,
+}: {
+  settings: SiteSettings;
+  navLinks: NavLink[];
+  propertyTypes: PropertyTypeCard[];
+}) {
   return (
     <footer className="bg-navy-950 text-white">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:grid-cols-4">
@@ -34,20 +42,22 @@ export function Footer({ settings }: { settings: SiteSettings }) {
         <div>
           <h4 className="font-display text-sm font-semibold uppercase tracking-widest text-gold-300">Explore</h4>
           <ul className="mt-5 space-y-3 text-sm text-white/70">
-            <li><Link href="/" className="hover:text-white">Home</Link></li>
-            <li><Link href="/properties" className="hover:text-white">Properties</Link></li>
-            <li><Link href="/about" className="hover:text-white">About Us</Link></li>
-            <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
+            {navLinks.map((link) => (
+              <li key={link.id}>
+                <Link href={link.href} className="hover:text-white">{link.label}</Link>
+              </li>
+            ))}
           </ul>
         </div>
 
         <div>
           <h4 className="font-display text-sm font-semibold uppercase tracking-widest text-gold-300">Property Types</h4>
           <ul className="mt-5 space-y-3 text-sm text-white/70">
-            <li><Link href="/properties?type=Apartment" className="hover:text-white">Apartments</Link></li>
-            <li><Link href="/properties?type=Villa" className="hover:text-white">Villas</Link></li>
-            <li><Link href="/properties?type=Commercial" className="hover:text-white">Commercial</Link></li>
-            <li><Link href="/properties?type=Plot" className="hover:text-white">Plots &amp; Land</Link></li>
+            {propertyTypes.map((t) => (
+              <li key={t.id}>
+                <Link href={`/properties?type=${t.type}`} className="hover:text-white">{t.label}</Link>
+              </li>
+            ))}
           </ul>
         </div>
 
