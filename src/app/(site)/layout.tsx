@@ -1,6 +1,7 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { LiveSync } from "@/components/LiveSync";
 import { repo } from "@/lib/repository";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -16,6 +17,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <main className="flex-1">{children}</main>
       <Footer settings={settings} navLinks={navLinks} propertyTypes={propertyTypes} />
       <WhatsAppButton phone={settings.whatsapp} />
+      <LiveSync />
     </div>
   );
 }
