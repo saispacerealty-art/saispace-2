@@ -150,35 +150,6 @@
     "createdAt": "2026-05-30T09:00:00.000Z"
   },
   {
-    "id": "p6",
-    "title": "Harbor View Apartments",
-    "slug": "harbor-view-apartments",
-    "type": "Apartment",
-    "status": "For Sale",
-    "price": 26500000,
-    "priceUnit": "total",
-    "city": "Mumbai",
-    "locality": "Worli",
-    "address": "Harbor View Towers, Worli Sea Face",
-    "bedrooms": 3,
-    "bathrooms": 3,
-    "areaSqft": 1980,
-    "description": "Sea-facing 3BHK residence in one of Worli's most sought-after addresses, offering uninterrupted ocean views, a private deck, and five-star building amenities.",
-    "features": [
-      "Sea view",
-      "Private deck",
-      "Infinity pool",
-      "Concierge service",
-      "Valet parking"
-    ],
-    "images": [
-      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1400&q=80",
-      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1400&q=80"
-    ],
-    "featured": true,
-    "createdAt": "2026-08-01T09:00:00.000Z"
-  },
-  {
     "id": "p7",
     "title": "Sunrise Row Villas",
     "slug": "sunrise-row-villas",
@@ -206,33 +177,5 @@
     ],
     "featured": false,
     "createdAt": "2026-06-05T09:00:00.000Z"
-  },
-  {
-    "id": "p8",
-    "title": "Central Square Retail Unit",
-    "slug": "central-square-retail-unit",
-    "type": "Commercial",
-    "status": "For Rent",
-    "price": 145000,
-    "priceUnit": "month",
-    "city": "Bangalore",
-    "locality": "Indiranagar",
-    "address": "Ground Floor, Central Square Mall, 100 Feet Road",
-    "bedrooms": 0,
-    "bathrooms": 1,
-    "areaSqft": 1200,
-    "description": "High-footfall retail unit on Indiranagar's premier high street, with double frontage and a flexible open floor plan suited to flagship stores or F&B.",
-    "features": [
-      "High street frontage",
-      "Flexible layout",
-      "Loading access",
-      "24x7 access"
-    ],
-    "images": [
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1400&q=80",
-      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1400&q=80"
-    ],
-    "featured": false,
-    "createdAt": "2026-07-28T09:00:00.000Z"
   }
 ]

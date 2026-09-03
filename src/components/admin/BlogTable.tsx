@@ -3,21 +3,30 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, AlertCircle } from "lucide-react";
 import type { BlogPost } from "@/lib/types";
 import { formatDate } from "@/lib/format";
+import { useConfirmDialog } from "./ConfirmDialog";
 
 export function BlogTable({ posts }: { posts: BlogPost[] }) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const { confirm, dialog } = useConfirmDialog();
 
   async function handleDelete(id: string, title: string) {
-    if (!window.confirm(`Delete "${title}"? This cannot be undone.`)) return;
+    if (!(await confirm(`Delete "${title}"? This cannot be undone.`))) return;
+    setError(null);
     setDeletingId(id);
     try {
       const res = await fetch(`/api/posts/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? `Delete failed (${res.status})`);
+      }
       router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Delete failed. Please try again.");
     } finally {
       setDeletingId(null);
     }
@@ -25,6 +34,11 @@ export function BlogTable({ posts }: { posts: BlogPost[] }) {
 
   return (
     <div className="overflow-x-auto rounded-2xl border border-navy-900/8 bg-white">
+      {error && (
+        <div className="flex items-center gap-2 border-b border-red-100 bg-red-50 px-4 py-2.5 text-sm text-red-700">
+          <AlertCircle className="h-4 w-4 shrink-0" /> {error}
+        </div>
+      )}
       <table className="w-full text-left text-sm">
         <thead>
           <tr className="border-b border-navy-900/8 text-xs uppercase tracking-wide text-navy-900/40">
@@ -62,6 +76,7 @@ export function BlogTable({ posts }: { posts: BlogPost[] }) {
         </tbody>
       </table>
       {posts.length === 0 && <p className="py-12 text-center text-sm text-navy-900/40">No posts yet.</p>}
+      {dialog}
     </div>
   );
 }

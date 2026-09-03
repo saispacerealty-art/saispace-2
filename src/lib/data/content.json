@@ -226,6 +226,11 @@
       "id": "n7",
       "href": "/contact",
       "label": "Contact Us"
+    },
+    {
+      "id": "n8",
+      "href": "/careers",
+      "label": "Careers"
     }
   ]
 }

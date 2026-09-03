@@ -4,14 +4,17 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Pencil, Trash2, Search, Star } from "lucide-react";
+import { Pencil, Trash2, Search, Star, AlertCircle } from "lucide-react";
 import type { Property } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
+import { useConfirmDialog } from "./ConfirmDialog";
 
 export function PropertiesTable({ properties }: { properties: Property[] }) {
   const router = useRouter();
   const [q, setQ] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const { confirm, dialog } = useConfirmDialog();
 
   const filtered = useMemo(() => {
     const term = q.toLowerCase().trim();
@@ -22,12 +25,18 @@ export function PropertiesTable({ properties }: { properties: Property[] }) {
   }, [properties, q]);
 
   async function handleDelete(id: string, title: string) {
-    if (!window.confirm(`Delete "${title}"? This cannot be undone.`)) return;
+    if (!(await confirm(`Delete "${title}"? This cannot be undone.`))) return;
+    setError(null);
     setDeletingId(id);
     try {
       const res = await fetch(`/api/properties/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? `Delete failed (${res.status})`);
+      }
       router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Delete failed. Please try again.");
     } finally {
       setDeletingId(null);
     }
@@ -35,6 +44,11 @@ export function PropertiesTable({ properties }: { properties: Property[] }) {
 
   return (
     <div className="rounded-2xl border border-navy-900/8 bg-white">
+      {error && (
+        <div className="flex items-center gap-2 border-b border-red-100 bg-red-50 px-4 py-2.5 text-sm text-red-700">
+          <AlertCircle className="h-4 w-4 shrink-0" /> {error}
+        </div>
+      )}
       <div className="flex items-center gap-2 border-b border-navy-900/8 p-4">
         <Search className="h-4 w-4 text-navy-900/40" />
         <input
@@ -115,6 +129,7 @@ export function PropertiesTable({ properties }: { properties: Property[] }) {
           <p className="py-12 text-center text-sm text-navy-900/40">No properties match your search.</p>
         )}
       </div>
+      {dialog}
     </div>
   );
 }

@@ -2,9 +2,10 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Mail, Phone, Trash2 } from "lucide-react";
+import { Mail, Phone, Trash2, AlertCircle } from "lucide-react";
 import type { Inquiry, InquiryStatus } from "@/lib/types";
 import { formatDateTime } from "@/lib/format";
+import { useConfirmDialog } from "./ConfirmDialog";
 
 const STATUSES: InquiryStatus[] = ["new", "contacted", "closed"];
 const FILTERS = ["all", ...STATUSES] as const;
@@ -13,6 +14,8 @@ export function InquiriesTable({ inquiries }: { inquiries: Inquiry[] }) {
   const router = useRouter();
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("all");
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const { confirm, dialog } = useConfirmDialog();
 
   const filtered = useMemo(
     () => (filter === "all" ? inquiries : inquiries.filter((i) => i.status === filter)),
@@ -20,25 +23,39 @@ export function InquiriesTable({ inquiries }: { inquiries: Inquiry[] }) {
   );
 
   async function updateStatus(id: string, status: InquiryStatus) {
+    setError(null);
     setBusyId(id);
     try {
-      await fetch(`/api/inquiries/${id}`, {
+      const res = await fetch(`/api/inquiries/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
       });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? `Update failed (${res.status})`);
+      }
       router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Update failed. Please try again.");
     } finally {
       setBusyId(null);
     }
   }
 
   async function handleDelete(id: string, name: string) {
-    if (!window.confirm(`Delete inquiry from "${name}"?`)) return;
+    if (!(await confirm(`Delete inquiry from "${name}"?`))) return;
+    setError(null);
     setBusyId(id);
     try {
-      await fetch(`/api/inquiries/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/inquiries/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? `Delete failed (${res.status})`);
+      }
       router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Delete failed. Please try again.");
     } finally {
       setBusyId(null);
     }
@@ -46,6 +63,11 @@ export function InquiriesTable({ inquiries }: { inquiries: Inquiry[] }) {
 
   return (
     <div>
+      {error && (
+        <div className="mb-4 flex items-center gap-2 rounded-xl border border-red-100 bg-red-50 px-4 py-2.5 text-sm text-red-700">
+          <AlertCircle className="h-4 w-4 shrink-0" /> {error}
+        </div>
+      )}
       <div className="flex flex-wrap gap-2">
         {FILTERS.map((f) => (
           <button
@@ -109,6 +131,7 @@ export function InquiriesTable({ inquiries }: { inquiries: Inquiry[] }) {
           </p>
         )}
       </div>
+      {dialog}
     </div>
   );
 }

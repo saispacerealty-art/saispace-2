@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Loader2, Save, Trash2, Plus } from "lucide-react";
+import { Loader2, Save, Trash2, Plus, AlertCircle } from "lucide-react";
 import { getIcon, ICON_NAMES } from "@/lib/icons";
 import type { ContentSectionParam } from "@/lib/content-sections";
+import { useConfirmDialog } from "./ConfirmDialog";
 
 export type ContentField<T> = {
   key: keyof T & string;
@@ -37,12 +38,15 @@ export function ContentListEditor<T extends Item>({
   const [savingId, setSavingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { confirm, dialog } = useConfirmDialog();
 
   function updateField(id: string, key: string, value: unknown) {
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, [key]: value } : item)));
   }
 
   async function handleSave(item: T) {
+    setError(null);
     setSavingId(item.id);
     try {
       const res = await fetch(`/api/content/${section}/${item.id}`, {
@@ -50,27 +54,39 @@ export function ContentListEditor<T extends Item>({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(item),
       });
-      if (!res.ok) throw new Error("Save failed");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? `Save failed (${res.status})`);
+      }
       router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Save failed. Please try again.");
     } finally {
       setSavingId(null);
     }
   }
 
   async function handleDelete(id: string) {
-    if (!window.confirm("Delete this item? This cannot be undone.")) return;
+    if (!(await confirm("Delete this item? This cannot be undone."))) return;
+    setError(null);
     setDeletingId(id);
     try {
       const res = await fetch(`/api/content/${section}/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Delete failed");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? `Delete failed (${res.status})`);
+      }
       setItems((prev) => prev.filter((i) => i.id !== id));
       router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Delete failed. Please try again.");
     } finally {
       setDeletingId(null);
     }
   }
 
   async function handleAdd() {
+    setError(null);
     setAdding(true);
     try {
       const res = await fetch(`/api/content/${section}`, {
@@ -78,10 +94,15 @@ export function ContentListEditor<T extends Item>({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(emptyItem),
       });
-      if (!res.ok) throw new Error("Create failed");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? `Create failed (${res.status})`);
+      }
       const created = (await res.json()) as T;
       setItems((prev) => [...prev, created]);
       router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Create failed. Please try again.");
     } finally {
       setAdding(false);
     }
@@ -108,6 +129,12 @@ export function ContentListEditor<T extends Item>({
           Add
         </button>
       </div>
+
+      {error && (
+        <div className="mt-4 flex items-center gap-2 rounded-xl border border-red-100 bg-red-50 px-4 py-2.5 text-sm text-red-700">
+          <AlertCircle className="h-4 w-4 shrink-0" /> {error}
+        </div>
+      )}
 
       <div className="mt-6 space-y-4">
         {items.map((item) => (
@@ -259,6 +286,7 @@ export function ContentListEditor<T extends Item>({
           <p className="py-8 text-center text-sm text-navy-900/40">Nothing here yet. Click Add to create one.</p>
         )}
       </div>
+      {dialog}
     </section>
   );
 }

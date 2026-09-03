@@ -11,6 +11,7 @@ import type {
   Property,
   SiteSettings,
 } from "./types";
+import { getSupabase } from "./supabase";
 
 /**
  * Data access is isolated behind this interface so the JSON-file store used
@@ -322,4 +323,426 @@ class JsonFileRepository implements DataRepository {
   }
 }
 
-export const repo: DataRepository = new JsonFileRepository();
+function rowToProperty(row: Record<string, unknown>): Property {
+  return {
+    id: row.id as string,
+    title: row.title as string,
+    slug: row.slug as string,
+    type: row.type as Property["type"],
+    status: row.status as Property["status"],
+    price: Number(row.price),
+    priceUnit: row.price_unit as Property["priceUnit"],
+    city: row.city as string,
+    locality: row.locality as string,
+    address: row.address as string,
+    bedrooms: Number(row.bedrooms),
+    bathrooms: Number(row.bathrooms),
+    areaSqft: Number(row.area_sqft),
+    description: row.description as string,
+    features: (row.features as string[]) ?? [],
+    images: (row.images as string[]) ?? [],
+    featured: Boolean(row.featured),
+    createdAt: row.created_at as string,
+  };
+}
+
+function propertyToRow(input: Partial<Property>): Record<string, unknown> {
+  const row: Record<string, unknown> = {};
+  if (input.title !== undefined) row.title = input.title;
+  if (input.slug !== undefined) row.slug = input.slug;
+  if (input.type !== undefined) row.type = input.type;
+  if (input.status !== undefined) row.status = input.status;
+  if (input.price !== undefined) row.price = input.price;
+  if (input.priceUnit !== undefined) row.price_unit = input.priceUnit;
+  if (input.city !== undefined) row.city = input.city;
+  if (input.locality !== undefined) row.locality = input.locality;
+  if (input.address !== undefined) row.address = input.address;
+  if (input.bedrooms !== undefined) row.bedrooms = input.bedrooms;
+  if (input.bathrooms !== undefined) row.bathrooms = input.bathrooms;
+  if (input.areaSqft !== undefined) row.area_sqft = input.areaSqft;
+  if (input.description !== undefined) row.description = input.description;
+  if (input.features !== undefined) row.features = input.features;
+  if (input.images !== undefined) row.images = input.images;
+  if (input.featured !== undefined) row.featured = input.featured;
+  return row;
+}
+
+function rowToProject(row: Record<string, unknown>): Project {
+  return {
+    id: row.id as string,
+    name: row.name as string,
+    slug: row.slug as string,
+    location: row.location as string,
+    detail: row.detail as string,
+    status: row.status as Project["status"],
+    description: row.description as string,
+    image: row.image as string,
+    createdAt: row.created_at as string,
+  };
+}
+
+function projectToRow(input: Partial<Project>): Record<string, unknown> {
+  const row: Record<string, unknown> = {};
+  if (input.name !== undefined) row.name = input.name;
+  if (input.slug !== undefined) row.slug = input.slug;
+  if (input.location !== undefined) row.location = input.location;
+  if (input.detail !== undefined) row.detail = input.detail;
+  if (input.status !== undefined) row.status = input.status;
+  if (input.description !== undefined) row.description = input.description;
+  if (input.image !== undefined) row.image = input.image;
+  return row;
+}
+
+function rowToPost(row: Record<string, unknown>): BlogPost {
+  return {
+    id: row.id as string,
+    title: row.title as string,
+    slug: row.slug as string,
+    category: row.category as string,
+    excerpt: row.excerpt as string,
+    content: row.content as string,
+    coverImage: row.cover_image as string,
+    publishedAt: row.published_at as string,
+  };
+}
+
+function postToRow(input: Partial<BlogPost>): Record<string, unknown> {
+  const row: Record<string, unknown> = {};
+  if (input.title !== undefined) row.title = input.title;
+  if (input.slug !== undefined) row.slug = input.slug;
+  if (input.category !== undefined) row.category = input.category;
+  if (input.excerpt !== undefined) row.excerpt = input.excerpt;
+  if (input.content !== undefined) row.content = input.content;
+  if (input.coverImage !== undefined) row.cover_image = input.coverImage;
+  return row;
+}
+
+function rowToInquiry(row: Record<string, unknown>): Inquiry {
+  return {
+    id: row.id as string,
+    name: row.name as string,
+    email: row.email as string,
+    phone: row.phone as string,
+    message: row.message as string,
+    propertyId: (row.property_id as string) ?? undefined,
+    propertyTitle: (row.property_title as string) ?? undefined,
+    status: row.status as Inquiry["status"],
+    createdAt: row.created_at as string,
+  };
+}
+
+function rowToSettings(row: Record<string, unknown>): SiteSettings {
+  return {
+    siteName: row.site_name as string,
+    tagline: row.tagline as string,
+    phone: row.phone as string,
+    whatsapp: row.whatsapp as string,
+    email: row.email as string,
+    address: row.address as string,
+    officeHours: row.office_hours as string,
+    heroEyebrow: row.hero_eyebrow as string,
+    heroTitle: row.hero_title as string,
+    heroAccent: row.hero_accent as string,
+    heroTagline: row.hero_tagline as string,
+    aboutText: row.about_text as string,
+    happyClients: Number(row.happy_clients),
+    yearsExperience: Number(row.years_experience),
+    socials: (row.socials as SiteSettings["socials"]) ?? {
+      facebook: "",
+      instagram: "",
+      linkedin: "",
+      youtube: "",
+    },
+  };
+}
+
+function settingsToRow(input: Partial<SiteSettings>): Record<string, unknown> {
+  const row: Record<string, unknown> = {};
+  if (input.siteName !== undefined) row.site_name = input.siteName;
+  if (input.tagline !== undefined) row.tagline = input.tagline;
+  if (input.phone !== undefined) row.phone = input.phone;
+  if (input.whatsapp !== undefined) row.whatsapp = input.whatsapp;
+  if (input.email !== undefined) row.email = input.email;
+  if (input.address !== undefined) row.address = input.address;
+  if (input.officeHours !== undefined) row.office_hours = input.officeHours;
+  if (input.heroEyebrow !== undefined) row.hero_eyebrow = input.heroEyebrow;
+  if (input.heroTitle !== undefined) row.hero_title = input.heroTitle;
+  if (input.heroAccent !== undefined) row.hero_accent = input.heroAccent;
+  if (input.heroTagline !== undefined) row.hero_tagline = input.heroTagline;
+  if (input.aboutText !== undefined) row.about_text = input.aboutText;
+  if (input.happyClients !== undefined) row.happy_clients = input.happyClients;
+  if (input.yearsExperience !== undefined) row.years_experience = input.yearsExperience;
+  if (input.socials !== undefined) row.socials = input.socials;
+  return row;
+}
+
+class SupabaseRepository implements DataRepository {
+  private get db() {
+    return getSupabase();
+  }
+
+  async listProperties(): Promise<Property[]> {
+    const { data, error } = await this.db.from("properties").select("*").order("created_at", { ascending: false });
+    if (error) throw new Error(error.message);
+    return (data ?? []).map(rowToProperty);
+  }
+
+  async getProperty(idOrSlug: string): Promise<Property | null> {
+    const { data, error } = await this.db
+      .from("properties")
+      .select("*")
+      .or(`id.eq.${idOrSlug},slug.eq.${idOrSlug}`)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return data ? rowToProperty(data) : null;
+  }
+
+  async createProperty(input: Omit<Property, "id" | "createdAt">): Promise<Property> {
+    const baseSlug = input.slug?.trim() ? slugify(input.slug) : slugify(input.title);
+    let slug = baseSlug;
+    let suffix = 1;
+    while ((await this.getProperty(slug)) !== null) {
+      slug = `${baseSlug}-${suffix++}`;
+    }
+    const row = { ...propertyToRow(input), id: makeId(), slug };
+    const { data, error } = await this.db.from("properties").insert(row).select().single();
+    if (error) throw new Error(error.message);
+    return rowToProperty(data);
+  }
+
+  async updateProperty(id: string, input: Partial<Property>): Promise<Property | null> {
+    const { data, error } = await this.db
+      .from("properties")
+      .update(propertyToRow(input))
+      .eq("id", id)
+      .select()
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return data ? rowToProperty(data) : null;
+  }
+
+  async deleteProperty(id: string): Promise<boolean> {
+    const { data, error } = await this.db.from("properties").delete().eq("id", id).select();
+    if (error) throw new Error(error.message);
+    return (data?.length ?? 0) > 0;
+  }
+
+  async listInquiries(): Promise<Inquiry[]> {
+    const { data, error } = await this.db.from("inquiries").select("*").order("created_at", { ascending: false });
+    if (error) throw new Error(error.message);
+    return (data ?? []).map(rowToInquiry);
+  }
+
+  async createInquiry(input: Omit<Inquiry, "id" | "createdAt" | "status">): Promise<Inquiry> {
+    const row = {
+      id: makeId(),
+      name: input.name,
+      email: input.email,
+      phone: input.phone,
+      message: input.message,
+      property_id: input.propertyId ?? null,
+      property_title: input.propertyTitle ?? null,
+      status: "new",
+    };
+    const { data, error } = await this.db.from("inquiries").insert(row).select().single();
+    if (error) throw new Error(error.message);
+    return rowToInquiry(data);
+  }
+
+  async updateInquiry(id: string, input: Partial<Inquiry>): Promise<Inquiry | null> {
+    const row: Record<string, unknown> = {};
+    if (input.status !== undefined) row.status = input.status;
+    if (input.name !== undefined) row.name = input.name;
+    if (input.email !== undefined) row.email = input.email;
+    if (input.phone !== undefined) row.phone = input.phone;
+    if (input.message !== undefined) row.message = input.message;
+    const { data, error } = await this.db.from("inquiries").update(row).eq("id", id).select().maybeSingle();
+    if (error) throw new Error(error.message);
+    return data ? rowToInquiry(data) : null;
+  }
+
+  async deleteInquiry(id: string): Promise<boolean> {
+    const { data, error } = await this.db.from("inquiries").delete().eq("id", id).select();
+    if (error) throw new Error(error.message);
+    return (data?.length ?? 0) > 0;
+  }
+
+  async getSettings(): Promise<SiteSettings> {
+    const { data, error } = await this.db.from("settings").select("*").eq("id", 1).single();
+    if (error) throw new Error(error.message);
+    return rowToSettings(data);
+  }
+
+  async updateSettings(input: Partial<SiteSettings>): Promise<SiteSettings> {
+    const { data, error } = await this.db
+      .from("settings")
+      .update(settingsToRow(input))
+      .eq("id", 1)
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return rowToSettings(data);
+  }
+
+  async listProjects(): Promise<Project[]> {
+    const { data, error } = await this.db.from("projects").select("*").order("created_at", { ascending: false });
+    if (error) throw new Error(error.message);
+    return (data ?? []).map(rowToProject);
+  }
+
+  async getProject(idOrSlug: string): Promise<Project | null> {
+    const { data, error } = await this.db
+      .from("projects")
+      .select("*")
+      .or(`id.eq.${idOrSlug},slug.eq.${idOrSlug}`)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return data ? rowToProject(data) : null;
+  }
+
+  async createProject(input: Omit<Project, "id" | "createdAt">): Promise<Project> {
+    const baseSlug = input.slug?.trim() ? slugify(input.slug) : slugify(input.name);
+    let slug = baseSlug;
+    let suffix = 1;
+    while ((await this.getProject(slug)) !== null) {
+      slug = `${baseSlug}-${suffix++}`;
+    }
+    const row = { ...projectToRow(input), id: makeId(), slug };
+    const { data, error } = await this.db.from("projects").insert(row).select().single();
+    if (error) throw new Error(error.message);
+    return rowToProject(data);
+  }
+
+  async updateProject(id: string, input: Partial<Project>): Promise<Project | null> {
+    const { data, error } = await this.db
+      .from("projects")
+      .update(projectToRow(input))
+      .eq("id", id)
+      .select()
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return data ? rowToProject(data) : null;
+  }
+
+  async deleteProject(id: string): Promise<boolean> {
+    const { data, error } = await this.db.from("projects").delete().eq("id", id).select();
+    if (error) throw new Error(error.message);
+    return (data?.length ?? 0) > 0;
+  }
+
+  async listPosts(): Promise<BlogPost[]> {
+    const { data, error } = await this.db.from("blog_posts").select("*").order("published_at", { ascending: false });
+    if (error) throw new Error(error.message);
+    return (data ?? []).map(rowToPost);
+  }
+
+  async getPost(idOrSlug: string): Promise<BlogPost | null> {
+    const { data, error } = await this.db
+      .from("blog_posts")
+      .select("*")
+      .or(`id.eq.${idOrSlug},slug.eq.${idOrSlug}`)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return data ? rowToPost(data) : null;
+  }
+
+  async createPost(input: Omit<BlogPost, "id" | "publishedAt">): Promise<BlogPost> {
+    const baseSlug = input.slug?.trim() ? slugify(input.slug) : slugify(input.title);
+    let slug = baseSlug;
+    let suffix = 1;
+    while ((await this.getPost(slug)) !== null) {
+      slug = `${baseSlug}-${suffix++}`;
+    }
+    const row = { ...postToRow(input), id: makeId(), slug };
+    const { data, error } = await this.db.from("blog_posts").insert(row).select().single();
+    if (error) throw new Error(error.message);
+    return rowToPost(data);
+  }
+
+  async updatePost(id: string, input: Partial<BlogPost>): Promise<BlogPost | null> {
+    const { data, error } = await this.db
+      .from("blog_posts")
+      .update(postToRow(input))
+      .eq("id", id)
+      .select()
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return data ? rowToPost(data) : null;
+  }
+
+  async deletePost(id: string): Promise<boolean> {
+    const { data, error } = await this.db.from("blog_posts").delete().eq("id", id).select();
+    if (error) throw new Error(error.message);
+    return (data?.length ?? 0) > 0;
+  }
+
+  async listContent<K extends ContentSection>(section: K): Promise<ContentMap[K][]> {
+    const { data, error } = await this.db
+      .from("content_items")
+      .select("id, data")
+      .eq("section", section)
+      .order("position", { ascending: true });
+    if (error) throw new Error(error.message);
+    return (data ?? []).map((row) => ({ ...(row.data as object), id: row.id }) as ContentMap[K]);
+  }
+
+  async createContentItem<K extends ContentSection>(
+    section: K,
+    input: Omit<ContentMap[K], "id">
+  ): Promise<ContentMap[K]> {
+    const id = makeId();
+    const { error } = await this.db.from("content_items").insert({ id, section, data: input });
+    if (error) throw new Error(error.message);
+    return { ...input, id } as ContentMap[K] & { id: string };
+  }
+
+  async updateContentItem<K extends ContentSection>(
+    section: K,
+    id: string,
+    input: Partial<ContentMap[K]>
+  ): Promise<ContentMap[K] | null> {
+    const { data: existing, error: readError } = await this.db
+      .from("content_items")
+      .select("data")
+      .eq("id", id)
+      .eq("section", section)
+      .maybeSingle();
+    if (readError) throw new Error(readError.message);
+    if (!existing) return null;
+    const merged = { ...(existing.data as object), ...input };
+    const { error } = await this.db.from("content_items").update({ data: merged }).eq("id", id);
+    if (error) throw new Error(error.message);
+    return { ...merged, id } as ContentMap[K];
+  }
+
+  async deleteContentItem(section: ContentSection, id: string): Promise<boolean> {
+    const { data, error } = await this.db
+      .from("content_items")
+      .delete()
+      .eq("id", id)
+      .eq("section", section)
+      .select();
+    if (error) throw new Error(error.message);
+    return (data?.length ?? 0) > 0;
+  }
+
+  async getPageCopy(): Promise<PageCopy> {
+    const { data, error } = await this.db.from("page_copy").select("data").eq("id", 1).single();
+    if (error) throw new Error(error.message);
+    return data.data as PageCopy;
+  }
+
+  async updatePageCopy(input: Partial<PageCopy>): Promise<PageCopy> {
+    const current = await this.getPageCopy();
+    const merged = { ...current, ...input };
+    const { error } = await this.db.from("page_copy").update({ data: merged }).eq("id", 1);
+    if (error) throw new Error(error.message);
+    return merged;
+  }
+}
+
+const supabaseConfigured = Boolean(
+  process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+export const repo: DataRepository = supabaseConfigured ? new SupabaseRepository() : new JsonFileRepository();

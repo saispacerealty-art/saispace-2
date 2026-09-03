@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "migrate:supabase": "node scripts/migrate-to-supabase.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.114.0",
     "clsx": "^2.1.1",
     "framer-motion": "^13.1.1",
     "lucide-react": "^1.33.0",

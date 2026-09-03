@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, AlertCircle } from "lucide-react";
 import type { Project } from "@/lib/types";
+import { useConfirmDialog } from "./ConfirmDialog";
 
 const STATUS_STYLES: Record<Project["status"], string> = {
   "Under Construction": "bg-gold-500/10 text-gold-700",
@@ -16,14 +17,22 @@ const STATUS_STYLES: Record<Project["status"], string> = {
 export function ProjectsTable({ projects }: { projects: Project[] }) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const { confirm, dialog } = useConfirmDialog();
 
   async function handleDelete(id: string, name: string) {
-    if (!window.confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    if (!(await confirm(`Delete "${name}"? This cannot be undone.`))) return;
+    setError(null);
     setDeletingId(id);
     try {
       const res = await fetch(`/api/projects/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? `Delete failed (${res.status})`);
+      }
       router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Delete failed. Please try again.");
     } finally {
       setDeletingId(null);
     }
@@ -31,6 +40,11 @@ export function ProjectsTable({ projects }: { projects: Project[] }) {
 
   return (
     <div className="overflow-x-auto rounded-2xl border border-navy-900/8 bg-white">
+      {error && (
+        <div className="flex items-center gap-2 border-b border-red-100 bg-red-50 px-4 py-2.5 text-sm text-red-700">
+          <AlertCircle className="h-4 w-4 shrink-0" /> {error}
+        </div>
+      )}
       <table className="w-full text-left text-sm">
         <thead>
           <tr className="border-b border-navy-900/8 text-xs uppercase tracking-wide text-navy-900/40">
@@ -78,6 +92,7 @@ export function ProjectsTable({ projects }: { projects: Project[] }) {
         </tbody>
       </table>
       {projects.length === 0 && <p className="py-12 text-center text-sm text-navy-900/40">No projects yet.</p>}
+      {dialog}
     </div>
   );
 }
