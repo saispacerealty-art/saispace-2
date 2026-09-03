@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Loader2, Save, Trash2, Plus, AlertCircle } from "lucide-react";
+import { Loader2, Save, Trash2, Plus, AlertCircle, Upload, X, Image as ImageIconLucide } from "lucide-react";
 import { getIcon, ICON_NAMES } from "@/lib/icons";
 import type { ContentSectionParam } from "@/lib/content-sections";
 import { useConfirmDialog } from "./ConfirmDialog";
@@ -39,10 +39,32 @@ export function ContentListEditor<T extends Item>({
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [uploadingKey, setUploadingKey] = useState<string | null>(null);
   const { confirm, dialog } = useConfirmDialog();
 
   function updateField(id: string, key: string, value: unknown) {
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, [key]: value } : item)));
+  }
+
+  async function handleImageUpload(itemId: string, fieldKey: string, e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const uploadKey = `${itemId}:${fieldKey}`;
+    setError(null);
+    setUploadingKey(uploadKey);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      if (!res.ok) throw new Error("Image upload failed");
+      const data = await res.json();
+      updateField(itemId, fieldKey, data.url);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Image upload failed. Please try again.");
+    } finally {
+      setUploadingKey(null);
+      e.target.value = "";
+    }
   }
 
   async function handleSave(item: T) {
@@ -225,20 +247,55 @@ export function ContentListEditor<T extends Item>({
                 }
 
                 if (field.type === "image") {
+                  const uploadKey = `${item.id}:${field.key}`;
+                  const isUploading = uploadingKey === uploadKey;
                   return (
-                    <div key={field.key}>
+                    <div key={field.key} className="sm:col-span-2">
                       <label className={labelClass}>{field.label}</label>
-                      <input
-                        value={String(value ?? "")}
-                        onChange={(e) => updateField(item.id, field.key, e.target.value)}
-                        className={inputClass}
-                        placeholder={field.placeholder ?? "https://..."}
-                      />
-                      {Boolean(value) && (
-                        <div className="relative mt-2 h-20 w-20 overflow-hidden rounded-lg bg-navy-100">
-                          <Image src={String(value)} alt="" fill sizes="80px" className="object-cover" />
+                      <div className="flex items-start gap-3">
+                        <div className="group relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-navy-100">
+                          {value ? (
+                            <>
+                              <Image src={String(value)} alt="" fill sizes="80px" className="object-cover" />
+                              <button
+                                type="button"
+                                onClick={() => updateField(item.id, field.key, "")}
+                                className="absolute right-1 top-1 rounded-full bg-black/60 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                                aria-label="Remove image"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </>
+                          ) : (
+                            <div className="flex h-full items-center justify-center text-navy-900/20">
+                              <ImageIconLucide className="h-6 w-6" />
+                            </div>
+                          )}
                         </div>
-                      )}
+                        <div className="flex-1 space-y-2">
+                          <label className="flex cursor-pointer items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-navy-900/15 bg-ivory-50 px-3 py-2.5 text-xs font-medium text-navy-900/60 hover:border-gold-500 hover:text-navy-900">
+                            {isUploading ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <Upload className="h-4 w-4" />
+                            )}
+                            {isUploading ? "Uploading..." : "Upload image"}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              disabled={isUploading}
+                              onChange={(e) => handleImageUpload(item.id, field.key, e)}
+                            />
+                          </label>
+                          <input
+                            value={String(value ?? "")}
+                            onChange={(e) => updateField(item.id, field.key, e.target.value)}
+                            className={inputClass}
+                            placeholder={field.placeholder ?? "or paste an image URL"}
+                          />
+                        </div>
+                      </div>
                     </div>
                   );
                 }
