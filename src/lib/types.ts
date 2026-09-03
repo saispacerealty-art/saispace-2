@@ -104,6 +104,22 @@ export type ServiceItem = {
 
 export type NavLink = { id: string; href: string; label: string };
 
+export type ReferralStatus = "pending" | "contacted" | "rewarded";
+
+export type Referral = {
+  id: string;
+  code: string;
+  referrerName: string;
+  referrerPhone: string;
+  referrerEmail?: string;
+  referredName: string;
+  referredPhone: string;
+  referredEmail?: string;
+  message?: string;
+  status: ReferralStatus;
+  createdAt: string;
+};
+
 export type ContentMap = {
   testimonials: Testimonial;
   whyChooseUs: WhyChooseUsPoint;

@@ -19,6 +19,7 @@ import {
   Users,
   Wrench,
   Compass,
+  Gift,
 } from "lucide-react";
 import clsx from "clsx";
 import { LogoMark } from "@/components/Logo";
@@ -48,7 +49,10 @@ const NAV_GROUPS: { label: string; links: { href: string; label: string; icon: t
   },
   {
     label: "Communication",
-    links: [{ href: "/admin/messages", label: "Messages", icon: MessageSquare }],
+    links: [
+      { href: "/admin/messages", label: "Messages", icon: MessageSquare },
+      { href: "/admin/referrals", label: "Referrals", icon: Gift },
+    ],
   },
 ];
 

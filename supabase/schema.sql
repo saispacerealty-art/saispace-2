@@ -90,6 +90,20 @@ create table if not exists content_items (
 );
 create index if not exists content_items_section_idx on content_items (section, position);
 
+create table if not exists referrals (
+  id text primary key,
+  code text not null unique,
+  referrer_name text not null,
+  referrer_phone text not null,
+  referrer_email text,
+  referred_name text not null,
+  referred_phone text not null,
+  referred_email text,
+  message text,
+  status text not null default 'pending',
+  created_at timestamptz not null default now()
+);
+
 -- Single-row table: always id = 1.
 create table if not exists page_copy (
   id int primary key default 1,
@@ -103,6 +117,7 @@ alter table blog_posts enable row level security;
 alter table inquiries enable row level security;
 alter table settings enable row level security;
 alter table content_items enable row level security;
+alter table referrals enable row level security;
 alter table page_copy enable row level security;
 -- No policies are created, so only requests using the service_role key
 -- (server-side only, see src/lib/supabase.ts) can read or write these tables.

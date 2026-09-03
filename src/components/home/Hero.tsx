@@ -34,11 +34,11 @@ export function Hero({
           loop
           playsInline
           poster="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80"
-          className="h-full w-full object-cover opacity-45"
+          className="h-full w-full object-cover opacity-90"
         >
           <source src="/videos/hero-background.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/70 via-navy-950/60 to-navy-950" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/45 via-navy-950/35 to-navy-950" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-20 sm:pt-28 md:pb-32">

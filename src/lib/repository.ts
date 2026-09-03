@@ -9,6 +9,7 @@ import type {
   PageCopy,
   Project,
   Property,
+  Referral,
   SiteSettings,
 } from "./types";
 import { getSupabase } from "./supabase";
@@ -29,6 +30,13 @@ export interface DataRepository {
   createInquiry(input: Omit<Inquiry, "id" | "createdAt" | "status">): Promise<Inquiry>;
   updateInquiry(id: string, input: Partial<Inquiry>): Promise<Inquiry | null>;
   deleteInquiry(id: string): Promise<boolean>;
+
+  listReferrals(): Promise<Referral[]>;
+  createReferral(
+    input: Omit<Referral, "id" | "code" | "status" | "createdAt">
+  ): Promise<Referral>;
+  updateReferral(id: string, input: Partial<Referral>): Promise<Referral | null>;
+  deleteReferral(id: string): Promise<boolean>;
 
   getSettings(): Promise<SiteSettings>;
   updateSettings(input: Partial<SiteSettings>): Promise<SiteSettings>;
@@ -69,6 +77,7 @@ const PROJECTS_FILE = path.join(DATA_DIR, "projects.json");
 const POSTS_FILE = path.join(DATA_DIR, "posts.json");
 const CONTENT_FILE = path.join(DATA_DIR, "content.json");
 const PAGE_COPY_FILE = path.join(DATA_DIR, "page-copy.json");
+const REFERRALS_FILE = path.join(DATA_DIR, "referrals.json");
 
 async function readJson<T>(file: string): Promise<T> {
   const raw = await fs.readFile(file, "utf-8");
@@ -89,6 +98,13 @@ function slugify(title: string): string {
 
 function makeId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+function generateReferralCode(): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O/1/I to avoid confusion
+  let code = "";
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return `SSR-${code}`;
 }
 
 class JsonFileRepository implements DataRepository {
@@ -172,6 +188,47 @@ class JsonFileRepository implements DataRepository {
     const next = items.filter((i) => i.id !== id);
     if (next.length === items.length) return false;
     await writeJson(INQUIRIES_FILE, next);
+    return true;
+  }
+
+  async listReferrals(): Promise<Referral[]> {
+    const items = await readJson<Referral[]>(REFERRALS_FILE);
+    return items.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+  }
+
+  async createReferral(
+    input: Omit<Referral, "id" | "code" | "status" | "createdAt">
+  ): Promise<Referral> {
+    const items = await readJson<Referral[]>(REFERRALS_FILE);
+    let code = generateReferralCode();
+    while (items.some((r) => r.code === code)) code = generateReferralCode();
+    const referral: Referral = {
+      ...input,
+      id: makeId(),
+      code,
+      status: "pending",
+      createdAt: new Date().toISOString(),
+    };
+    items.push(referral);
+    await writeJson(REFERRALS_FILE, items);
+    return referral;
+  }
+
+  async updateReferral(id: string, input: Partial<Referral>): Promise<Referral | null> {
+    const items = await readJson<Referral[]>(REFERRALS_FILE);
+    const idx = items.findIndex((r) => r.id === id);
+    if (idx === -1) return null;
+    const updated = { ...items[idx], ...input, id: items[idx].id, code: items[idx].code };
+    items[idx] = updated;
+    await writeJson(REFERRALS_FILE, items);
+    return updated;
+  }
+
+  async deleteReferral(id: string): Promise<boolean> {
+    const items = await readJson<Referral[]>(REFERRALS_FILE);
+    const next = items.filter((r) => r.id !== id);
+    if (next.length === items.length) return false;
+    await writeJson(REFERRALS_FILE, next);
     return true;
   }
 
@@ -431,6 +488,22 @@ function rowToInquiry(row: Record<string, unknown>): Inquiry {
   };
 }
 
+function rowToReferral(row: Record<string, unknown>): Referral {
+  return {
+    id: row.id as string,
+    code: row.code as string,
+    referrerName: row.referrer_name as string,
+    referrerPhone: row.referrer_phone as string,
+    referrerEmail: (row.referrer_email as string) ?? undefined,
+    referredName: row.referred_name as string,
+    referredPhone: row.referred_phone as string,
+    referredEmail: (row.referred_email as string) ?? undefined,
+    message: (row.message as string) ?? undefined,
+    status: row.status as Referral["status"],
+    createdAt: row.created_at as string,
+  };
+}
+
 function rowToSettings(row: Record<string, unknown>): SiteSettings {
   return {
     siteName: row.site_name as string,
@@ -563,6 +636,58 @@ class SupabaseRepository implements DataRepository {
 
   async deleteInquiry(id: string): Promise<boolean> {
     const { data, error } = await this.db.from("inquiries").delete().eq("id", id).select();
+    if (error) throw new Error(error.message);
+    return (data?.length ?? 0) > 0;
+  }
+
+  async listReferrals(): Promise<Referral[]> {
+    const { data, error } = await this.db.from("referrals").select("*").order("created_at", { ascending: false });
+    if (error) throw new Error(error.message);
+    return (data ?? []).map(rowToReferral);
+  }
+
+  async createReferral(
+    input: Omit<Referral, "id" | "code" | "status" | "createdAt">
+  ): Promise<Referral> {
+    let code = generateReferralCode();
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const row = {
+        id: makeId(),
+        code,
+        referrer_name: input.referrerName,
+        referrer_phone: input.referrerPhone,
+        referrer_email: input.referrerEmail ?? null,
+        referred_name: input.referredName,
+        referred_phone: input.referredPhone,
+        referred_email: input.referredEmail ?? null,
+        message: input.message ?? null,
+        status: "pending",
+      };
+      const { data, error } = await this.db.from("referrals").insert(row).select().single();
+      if (!error) return rowToReferral(data);
+      if (error.code !== "23505") throw new Error(error.message); // not a unique-code collision
+      code = generateReferralCode();
+    }
+    throw new Error("Could not generate a unique referral code. Please try again.");
+  }
+
+  async updateReferral(id: string, input: Partial<Referral>): Promise<Referral | null> {
+    const row: Record<string, unknown> = {};
+    if (input.status !== undefined) row.status = input.status;
+    if (input.referrerName !== undefined) row.referrer_name = input.referrerName;
+    if (input.referrerPhone !== undefined) row.referrer_phone = input.referrerPhone;
+    if (input.referrerEmail !== undefined) row.referrer_email = input.referrerEmail;
+    if (input.referredName !== undefined) row.referred_name = input.referredName;
+    if (input.referredPhone !== undefined) row.referred_phone = input.referredPhone;
+    if (input.referredEmail !== undefined) row.referred_email = input.referredEmail;
+    if (input.message !== undefined) row.message = input.message;
+    const { data, error } = await this.db.from("referrals").update(row).eq("id", id).select().maybeSingle();
+    if (error) throw new Error(error.message);
+    return data ? rowToReferral(data) : null;
+  }
+
+  async deleteReferral(id: string): Promise<boolean> {
+    const { data, error } = await this.db.from("referrals").delete().eq("id", id).select();
     if (error) throw new Error(error.message);
     return (data?.length ?? 0) > 0;
   }
