@@ -19,6 +19,11 @@ import {
   Mail,
   Clock,
   Check,
+  Share2,
+  MessagesSquare,
+  Wallet,
+  Gift,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 
@@ -43,6 +48,11 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   Mail,
   Clock,
   Check,
+  Share2,
+  MessagesSquare,
+  Wallet,
+  Gift,
+  Sparkles,
 };
 
 export const ICON_NAMES = Object.keys(ICON_MAP);

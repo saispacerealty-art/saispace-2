@@ -237,5 +237,45 @@
       "href": "/refer",
       "label": "Refer & Earn"
     }
+  ],
+  "careerRoles": [
+    {
+      "id": "cr1",
+      "title": "Property Consultant",
+      "type": "Full-time · Pune / Mumbai",
+      "description": "Guide buyers and tenants from first visit to closed deal. Prior sales experience preferred; real estate background a plus, not a must."
+    },
+    {
+      "id": "cr2",
+      "title": "Marketing Associate",
+      "type": "Full-time · Pune",
+      "description": "Own listing photography coordination, social content, and campaign performance across our digital channels."
+    },
+    {
+      "id": "cr3",
+      "title": "Client Relations Executive",
+      "type": "Full-time · Pune",
+      "description": "Be the first voice a client hears — qualify inbound enquiries, schedule site visits, and keep our CRM sharp."
+    }
+  ],
+  "referralSteps": [
+    {
+      "id": "rs1",
+      "icon": "Share2",
+      "title": "Share their details",
+      "description": "Fill in your details and your friend's — no need to chase them for anything upfront."
+    },
+    {
+      "id": "rs2",
+      "icon": "MessagesSquare",
+      "title": "We take it from there",
+      "description": "Our advisors reach out to your friend directly and guide them through their search."
+    },
+    {
+      "id": "rs3",
+      "icon": "Wallet",
+      "title": "You get rewarded",
+      "description": "Once their deal closes, your reward is processed against the referral code below."
+    }
   ]
 }

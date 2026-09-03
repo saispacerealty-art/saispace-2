@@ -104,6 +104,10 @@ export type ServiceItem = {
 
 export type NavLink = { id: string; href: string; label: string };
 
+export type CareerRole = { id: string; title: string; type: string; description: string };
+
+export type ReferralStep = { id: string; icon: string; title: string; description: string };
+
 export type ReferralStatus = "pending" | "contacted" | "rewarded";
 
 export type Referral = {
@@ -128,6 +132,8 @@ export type ContentMap = {
   team: TeamMember;
   services: ServiceItem;
   navLinks: NavLink;
+  careerRoles: CareerRole;
+  referralSteps: ReferralStep;
 };
 
 export type ContentSection = keyof ContentMap;
@@ -152,4 +158,10 @@ export type PageCopy = {
   contactHeroEyebrow: string;
   contactHeroTitle: string;
   contactHeroText: string;
+  careersHeroEyebrow: string;
+  careersHeroTitle: string;
+  careersHeroText: string;
+  referHeroEyebrow: string;
+  referHeroTitle: string;
+  referHeroText: string;
 };

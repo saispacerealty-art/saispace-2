@@ -30,26 +30,12 @@ const PERKS = [
   },
 ];
 
-const OPEN_ROLES = [
-  {
-    title: "Property Consultant",
-    type: "Full-time · Pune / Mumbai",
-    description: "Guide buyers and tenants from first visit to closed deal. Prior sales experience preferred; real estate background a plus, not a must.",
-  },
-  {
-    title: "Marketing Associate",
-    type: "Full-time · Pune",
-    description: "Own listing photography coordination, social content, and campaign performance across our digital channels.",
-  },
-  {
-    title: "Client Relations Executive",
-    type: "Full-time · Pune",
-    description: "Be the first voice a client hears — qualify inbound enquiries, schedule site visits, and keep our CRM sharp.",
-  },
-];
-
 export default async function CareersPage() {
-  const settings = await repo.getSettings();
+  const [settings, copy, openRoles] = await Promise.all([
+    repo.getSettings(),
+    repo.getPageCopy(),
+    repo.listContent("careerRoles"),
+  ]);
   const applyHref = (role: string) =>
     `mailto:${settings.email}?subject=${encodeURIComponent(`Application: ${role}`)}`;
   const generalApplyHref = `mailto:${settings.email}?subject=${encodeURIComponent("General Application")}`;
@@ -58,14 +44,11 @@ export default async function CareersPage() {
     <>
       <section className="bg-navy-950 py-16">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-300">Careers</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-300">{copy.careersHeroEyebrow}</p>
           <h1 className="mt-3 max-w-2xl font-display text-3xl font-semibold text-white sm:text-4xl">
-            Build your career, one client relationship at a time.
+            {copy.careersHeroTitle}
           </h1>
-          <p className="mt-3 max-w-xl text-sm text-white/60">
-            We&apos;re a growing team of advisors, marketers, and client-relations specialists who believe real
-            estate is a people business first. If that sounds like you, we&apos;d like to meet you.
-          </p>
+          <p className="mt-3 max-w-xl text-sm text-white/60">{copy.careersHeroText}</p>
         </div>
       </section>
 
@@ -96,9 +79,9 @@ export default async function CareersPage() {
           </h2>
 
           <div className="mt-10 space-y-4">
-            {OPEN_ROLES.map((role) => (
+            {openRoles.map((role) => (
               <div
-                key={role.title}
+                key={role.id}
                 className="flex flex-col gap-4 rounded-2xl border border-navy-900/8 bg-white p-6 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div>
@@ -114,6 +97,11 @@ export default async function CareersPage() {
                 </a>
               </div>
             ))}
+            {openRoles.length === 0 && (
+              <p className="rounded-2xl border border-dashed border-navy-900/15 bg-white px-6 py-8 text-center text-sm text-navy-900/40">
+                No open roles right now — check back soon.
+              </p>
+            )}
           </div>
         </div>
       </section>

@@ -6,6 +6,8 @@ export const CONTENT_SECTIONS = [
   "team",
   "services",
   "navLinks",
+  "careerRoles",
+  "referralSteps",
 ] as const;
 
 export type ContentSectionParam = (typeof CONTENT_SECTIONS)[number];
@@ -22,4 +24,6 @@ export const CONTENT_REVALIDATE_PATHS: Record<ContentSectionParam, string[]> = {
   team: ["/about"],
   services: ["/services"],
   navLinks: ["/"],
+  careerRoles: ["/careers"],
+  referralSteps: ["/refer"],
 };

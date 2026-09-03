@@ -20,6 +20,8 @@ import {
   Wrench,
   Compass,
   Gift,
+  Briefcase,
+  BookOpen,
 } from "lucide-react";
 import clsx from "clsx";
 import { LogoMark } from "@/components/Logo";
@@ -43,6 +45,8 @@ const NAV_GROUPS: { label: string; links: { href: string; label: string; icon: t
       { href: "/admin/content/homepage", label: "Homepage", icon: Home },
       { href: "/admin/content/about", label: "About Page", icon: Users },
       { href: "/admin/content/services", label: "Services Page", icon: Wrench },
+      { href: "/admin/content/careers", label: "Careers Page", icon: Briefcase },
+      { href: "/admin/content/referral", label: "Referral Page", icon: Gift },
       { href: "/admin/content/navigation", label: "Navigation", icon: Compass },
       { href: "/admin/settings", label: "General Settings", icon: Settings },
     ],
@@ -53,6 +57,10 @@ const NAV_GROUPS: { label: string; links: { href: string; label: string; icon: t
       { href: "/admin/messages", label: "Messages", icon: MessageSquare },
       { href: "/admin/referrals", label: "Referrals", icon: Gift },
     ],
+  },
+  {
+    label: "Help",
+    links: [{ href: "/admin/manual", label: "User Manual", icon: BookOpen }],
   },
 ];
 
