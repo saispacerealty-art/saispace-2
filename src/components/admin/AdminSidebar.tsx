@@ -109,7 +109,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
   return (
     <div className="flex h-full flex-col bg-navy-950 py-6">
-      <div className="flex items-center gap-3 px-5">
+      <div className="flex shrink-0 items-center gap-3 px-5">
         <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-ivory-100 shadow-sm">
           <LogoMark className="h-7 w-7" />
         </span>
@@ -119,11 +119,11 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         </div>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 flex-1 overflow-y-auto">
         <NavLinks pathname={pathname} onNavigate={onNavigate} />
       </div>
 
-      <div className="mt-auto space-y-1 px-3">
+      <div className="mt-auto shrink-0 space-y-1 px-3 pt-3">
         <Link
           href="/"
           target="_blank"
