@@ -2,7 +2,7 @@ const SESSION_COOKIE = "ssr_admin_session";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 12; // 12 hours
 
 function b64urlEncode(bytes: Uint8Array): string {
-  let str = btoa(String.fromCharCode(...bytes));
+  const str = btoa(String.fromCharCode(...bytes));
   return str.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
