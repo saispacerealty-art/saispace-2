@@ -4,8 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 import { useState } from "react";
 
-const TYPES = ["All Types", "Apartment", "Villa", "Commercial", "Plot", "Residential"];
-const STATUSES = ["Any Status", "For Sale", "For Rent", "Sold"];
+const TYPES = ["All Types", "Villa", "Commercial", "Plot", "Residential"];
+const STATUSES = ["Any Status", "For Sale", "Sold"];
 const SORTS = [
   { value: "newest", label: "Newest First" },
   { value: "price-asc", label: "Price: Low to High" },

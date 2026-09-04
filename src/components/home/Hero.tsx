@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Search } from "lucide-react";
 
-const TYPES = ["Any Type", "Apartment", "Villa", "Commercial", "Plot"];
+const TYPES = ["Any Type", "Residential", "Villa", "Commercial", "Plot"];
 
 export function Hero({
   stats,

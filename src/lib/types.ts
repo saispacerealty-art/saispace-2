@@ -1,5 +1,5 @@
-export type PropertyType = "Residential" | "Commercial" | "Plot" | "Villa" | "Apartment";
-export type PropertyStatus = "For Sale" | "For Rent" | "Sold";
+export type PropertyType = "Residential" | "Commercial" | "Plot" | "Villa";
+export type PropertyStatus = "For Sale" | "Sold";
 
 export type Property = {
   id: string;

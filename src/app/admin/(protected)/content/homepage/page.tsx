@@ -47,12 +47,12 @@ export default async function AdminHomepagePage() {
               key: "type",
               label: "Property Type",
               type: "select",
-              options: ["Residential", "Commercial", "Plot", "Villa", "Apartment"],
+              options: ["Residential", "Commercial", "Plot", "Villa"],
             },
             { key: "image", label: "Image URL", type: "image" },
           ]}
           initialItems={propertyTypes}
-          emptyItem={{ label: "New Category", type: "Apartment", image: "" }}
+          emptyItem={{ label: "New Category", type: "Residential", image: "" }}
         />
 
         <ContentListEditor<WhyChooseUsPoint>
