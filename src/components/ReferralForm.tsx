@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, Copy, Loader2 } from "lucide-react";
+import { CheckCircle2, Copy, Loader2, MessageCircle } from "lucide-react";
 
-export function ReferralForm() {
+export function ReferralForm({ whatsapp }: { whatsapp: string }) {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [code, setCode] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -16,6 +16,18 @@ export function ReferralForm() {
     referredEmail: "",
     message: "",
   });
+
+  function whatsappUrl(referralCode: string) {
+    const digits = whatsapp.replace(/[^\d]/g, "");
+    const text = [
+      `Hi Sai Space Realty, I just submitted a referral (code ${referralCode}).`,
+      `Referring: ${form.referredName} (${form.referredPhone})`,
+      form.message ? `Note: ${form.message}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+    return `https://wa.me/${digits}?text=${encodeURIComponent(text)}`;
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,6 +42,7 @@ export function ReferralForm() {
       const data = await res.json();
       setCode(data.code);
       setStatus("success");
+      window.open(whatsappUrl(data.code), "_blank", "noreferrer");
     } catch {
       setStatus("error");
     }
@@ -66,6 +79,15 @@ export function ReferralForm() {
           <Copy className="h-4 w-4 text-navy-900/40" />
         </button>
         {copied && <p className="text-xs font-medium text-gold-700">Copied to clipboard</p>}
+        <a
+          href={whatsappUrl(code)}
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.02]"
+        >
+          <MessageCircle className="h-4 w-4" fill="white" />
+          Send us the details on WhatsApp
+        </a>
         <button
           onClick={() => {
             setStatus("idle");

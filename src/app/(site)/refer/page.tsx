@@ -10,7 +10,11 @@ export const metadata: Metadata = {
 };
 
 export default async function ReferPage() {
-  const [copy, steps] = await Promise.all([repo.getPageCopy(), repo.listContent("referralSteps")]);
+  const [copy, steps, settings] = await Promise.all([
+    repo.getPageCopy(),
+    repo.listContent("referralSteps"),
+    repo.getSettings(),
+  ]);
 
   return (
     <>
@@ -57,7 +61,7 @@ export default async function ReferPage() {
               </div>
             </div>
             <div className="mt-6">
-              <ReferralForm />
+              <ReferralForm whatsapp={settings.whatsapp} />
             </div>
           </div>
         </div>
