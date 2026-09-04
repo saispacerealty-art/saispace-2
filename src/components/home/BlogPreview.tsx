@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { BlogPost } from "@/lib/types";
 import { formatDate } from "@/lib/format";
+import { PLACEHOLDER_LISTING_IMAGE } from "@/lib/placeholders";
 
 export function BlogPreview({ posts }: { posts: BlogPost[] }) {
   if (posts.length === 0) return null;
@@ -31,7 +32,7 @@ export function BlogPreview({ posts }: { posts: BlogPost[] }) {
             >
               <div className="relative h-40 w-full overflow-hidden bg-navy-100">
                 <Image
-                  src={post.coverImage}
+                  src={post.coverImage || PLACEHOLDER_LISTING_IMAGE}
                   alt={post.title}
                   fill
                   sizes="(min-width: 1024px) 300px, 100vw"

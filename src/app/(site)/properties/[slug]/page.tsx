@@ -92,7 +92,7 @@ export default async function PropertyDetailPage({
           <div className="mt-10">
             <h2 className="font-display text-xl font-semibold text-navy-900">About this property</h2>
             <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-navy-900/70">
-              {property.description}
+              {property.description || "Description coming soon — contact us for details."}
             </p>
           </div>
 

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { repo } from "@/lib/repository";
 import { formatDate } from "@/lib/format";
+import { PLACEHOLDER_LISTING_IMAGE } from "@/lib/placeholders";
 
 export async function generateMetadata({
   params,
@@ -36,7 +37,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <p className="mt-3 text-sm text-navy-900/50">{formatDate(post.publishedAt)}</p>
 
       <div className="relative mt-8 h-64 w-full overflow-hidden rounded-2xl bg-navy-100 sm:h-96">
-        <Image src={post.coverImage} alt={post.title} fill priority sizes="768px" className="object-cover" />
+        <Image
+          src={post.coverImage || PLACEHOLDER_LISTING_IMAGE}
+          alt={post.title}
+          fill
+          priority
+          sizes="768px"
+          className="object-cover"
+        />
       </div>
 
       <div className="mt-8 max-w-none whitespace-pre-line text-sm leading-relaxed text-navy-900/75 sm:text-base">

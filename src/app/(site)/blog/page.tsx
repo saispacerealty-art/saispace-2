@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { repo } from "@/lib/repository";
 import { formatDate } from "@/lib/format";
+import { PLACEHOLDER_LISTING_IMAGE } from "@/lib/placeholders";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -36,7 +37,7 @@ export default async function BlogPage() {
             >
               <div className="relative h-48 w-full overflow-hidden bg-navy-100">
                 <Image
-                  src={post.coverImage}
+                  src={post.coverImage || PLACEHOLDER_LISTING_IMAGE}
                   alt={post.title}
                   fill
                   sizes="(min-width: 1024px) 380px, 100vw"

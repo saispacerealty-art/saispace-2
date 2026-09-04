@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import type { Project } from "@/lib/types";
+import { PLACEHOLDER_LISTING_IMAGE } from "@/lib/placeholders";
 
 const STATUS_STYLES: Record<Project["status"], string> = {
   "Under Construction": "bg-gold-500/10 text-gold-700",
@@ -17,7 +18,7 @@ export function ProjectCard({ project }: { project: Project }) {
     >
       <div className="relative h-56 w-full overflow-hidden bg-navy-100">
         <Image
-          src={project.image}
+          src={project.image || PLACEHOLDER_LISTING_IMAGE}
           alt={project.name}
           fill
           sizes="(min-width: 1024px) 380px, 100vw"

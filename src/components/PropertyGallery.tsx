@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { PLACEHOLDER_LISTING_IMAGE } from "@/lib/placeholders";
 
 export function PropertyGallery({ images, title }: { images: string[]; title: string }) {
   const [active, setActive] = useState(0);
-  const shown = images.length ? images : ["https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80"];
+  const shown = images.length ? images : [PLACEHOLDER_LISTING_IMAGE];
 
   return (
     <div>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BedDouble, Bath, MapPin, Ruler } from "lucide-react";
 import type { Property } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
+import { PLACEHOLDER_LISTING_IMAGE } from "@/lib/placeholders";
 
 export function PropertyCard({ property }: { property: Property }) {
   return (
@@ -12,7 +13,7 @@ export function PropertyCard({ property }: { property: Property }) {
     >
       <div className="relative h-56 w-full overflow-hidden bg-navy-100">
         <Image
-          src={property.images[0]}
+          src={property.images[0] || PLACEHOLDER_LISTING_IMAGE}
           alt={property.title}
           fill
           sizes="(min-width: 1024px) 380px, 100vw"

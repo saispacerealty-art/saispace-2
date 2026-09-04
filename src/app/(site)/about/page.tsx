@@ -24,6 +24,7 @@ export default async function AboutPage() {
             src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=2000&q=80"
             alt="Modern architecture"
             fill
+            sizes="100vw"
             className="object-cover opacity-30"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-navy-950/60 to-navy-950" />
@@ -44,6 +45,7 @@ export default async function AboutPage() {
               src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1000&q=80"
               alt="Our office"
               fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-cover"
             />
           </div>
@@ -82,7 +84,25 @@ export default async function AboutPage() {
             {team.map((member) => (
               <div key={member.id} className="overflow-hidden rounded-2xl bg-white shadow-sm">
                 <div className="relative h-56 w-full">
-                  <Image src={member.photo} alt={member.name} fill className="object-cover" />
+                  {member.photo ? (
+                    <Image
+                      src={member.photo}
+                      alt={member.name}
+                      fill
+                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-navy-900">
+                      <span className="font-display text-3xl font-semibold text-gold-400">
+                        {member.name
+                          .split(" ")
+                          .map((part) => part[0])
+                          .slice(0, 2)
+                          .join("")}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className="p-4">
                   <h3 className="font-display text-base font-semibold text-navy-900">{member.name}</h3>

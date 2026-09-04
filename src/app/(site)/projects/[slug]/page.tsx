@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, MapPin } from "lucide-react";
 import { repo } from "@/lib/repository";
 import { InquiryForm } from "@/components/InquiryForm";
+import { PLACEHOLDER_LISTING_IMAGE } from "@/lib/placeholders";
 
 export async function generateMetadata({
   params,
@@ -31,7 +32,14 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       <div className="mt-6 grid gap-10 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <div className="relative h-[280px] w-full overflow-hidden rounded-2xl bg-navy-100 sm:h-[420px]">
-            <Image src={project.image} alt={project.name} fill priority sizes="(min-width: 1024px) 800px, 100vw" className="object-cover" />
+            <Image
+              src={project.image || PLACEHOLDER_LISTING_IMAGE}
+              alt={project.name}
+              fill
+              priority
+              sizes="(min-width: 1024px) 800px, 100vw"
+              className="object-cover"
+            />
           </div>
 
           <div className="mt-8">
@@ -45,7 +53,9 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
           <div className="mt-8">
             <h2 className="font-display text-xl font-semibold text-navy-900">About this project</h2>
-            <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-navy-900/70">{project.description}</p>
+            <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-navy-900/70">
+              {project.description || "Description coming soon — contact us for details."}
+            </p>
           </div>
         </div>
 
