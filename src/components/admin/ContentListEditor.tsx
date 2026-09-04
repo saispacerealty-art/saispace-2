@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Loader2, Save, Trash2, Plus, AlertCircle, Upload, X, Image as ImageIconLucide } from "lucide-react";
 import { getIcon, ICON_NAMES } from "@/lib/icons";
 import type { ContentSectionParam } from "@/lib/content-sections";
+import { parseApiError } from "@/lib/parse-api-error";
 import { useConfirmDialog } from "./ConfirmDialog";
 
 export type ContentField<T> = {
@@ -56,7 +57,7 @@ export function ContentListEditor<T extends Item>({
       const fd = new FormData();
       fd.append("file", file);
       const res = await fetch("/api/upload", { method: "POST", body: fd });
-      if (!res.ok) throw new Error("Image upload failed");
+      if (!res.ok) throw new Error(await parseApiError(res, "Image upload failed"));
       const data = await res.json();
       updateField(itemId, fieldKey, data.url);
     } catch (err) {
@@ -77,8 +78,7 @@ export function ContentListEditor<T extends Item>({
         body: JSON.stringify(item),
       });
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.error ?? `Save failed (${res.status})`);
+        throw new Error(await parseApiError(res, "Save failed"));
       }
       router.refresh();
     } catch (err) {
@@ -95,8 +95,7 @@ export function ContentListEditor<T extends Item>({
     try {
       const res = await fetch(`/api/content/${section}/${id}`, { method: "DELETE" });
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.error ?? `Delete failed (${res.status})`);
+        throw new Error(await parseApiError(res, "Delete failed"));
       }
       setItems((prev) => prev.filter((i) => i.id !== id));
       router.refresh();
@@ -117,8 +116,7 @@ export function ContentListEditor<T extends Item>({
         body: JSON.stringify(emptyItem),
       });
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.error ?? `Create failed (${res.status})`);
+        throw new Error(await parseApiError(res, "Create failed"));
       }
       const created = (await res.json()) as T;
       setItems((prev) => [...prev, created]);
@@ -259,7 +257,10 @@ export function ContentListEditor<T extends Item>({
                               <Image src={String(value)} alt="" fill sizes="80px" className="object-cover" />
                               <button
                                 type="button"
-                                onClick={() => updateField(item.id, field.key, "")}
+                                onClick={() => {
+                                  updateField(item.id, field.key, "");
+                                  handleSave({ ...item, [field.key]: "" });
+                                }}
                                 className="absolute right-1 top-1 rounded-full bg-black/60 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
                                 aria-label="Remove image"
                               >

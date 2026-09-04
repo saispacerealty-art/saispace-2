@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Pencil, Trash2, AlertCircle } from "lucide-react";
 import type { Project } from "@/lib/types";
+import { parseApiError } from "@/lib/parse-api-error";
 import { useConfirmDialog } from "./ConfirmDialog";
 
 const STATUS_STYLES: Record<Project["status"], string> = {
@@ -27,8 +28,7 @@ export function ProjectsTable({ projects }: { projects: Project[] }) {
     try {
       const res = await fetch(`/api/projects/${id}`, { method: "DELETE" });
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.error ?? `Delete failed (${res.status})`);
+        throw new Error(await parseApiError(res, "Delete failed"));
       }
       router.refresh();
     } catch (err) {

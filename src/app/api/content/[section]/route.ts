@@ -3,32 +3,42 @@ import { revalidatePath } from "next/cache";
 import { repo } from "@/lib/repository";
 import { isAdminRequest } from "@/lib/require-admin";
 import { isContentSection, CONTENT_REVALIDATE_PATHS } from "@/lib/content-sections";
+import { apiError, apiErrorFromException } from "@/lib/api-errors";
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ section: string }> }) {
   const { section } = await params;
   if (!isContentSection(section)) {
-    return NextResponse.json({ error: "Unknown content section" }, { status: 404 });
+    return apiError("UNKNOWN_SECTION", `"${section}" is not a known content section.`, 404);
   }
-  const items = await repo.listContent(section);
-  return NextResponse.json(items);
+  try {
+    const items = await repo.listContent(section);
+    return NextResponse.json(items);
+  } catch (err) {
+    return apiErrorFromException(err, `GET /api/content/${section}`);
+  }
 }
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ section: string }> }) {
   if (!(await isAdminRequest(req))) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return apiError("UNAUTHORIZED", "You must be signed in as an admin.", 401);
   }
   const { section } = await params;
   if (!isContentSection(section)) {
-    return NextResponse.json({ error: "Unknown content section" }, { status: 404 });
-  }
-  const body = await req.json();
-  const item = await repo.createContentItem(section, body);
-
-  if (section === "navLinks") {
-    revalidatePath("/", "layout");
-  } else {
-    for (const path of CONTENT_REVALIDATE_PATHS[section]) revalidatePath(path);
+    return apiError("UNKNOWN_SECTION", `"${section}" is not a known content section.`, 404);
   }
 
-  return NextResponse.json(item, { status: 201 });
+  try {
+    const body = await req.json();
+    const item = await repo.createContentItem(section, body);
+
+    if (section === "navLinks") {
+      revalidatePath("/", "layout");
+    } else {
+      for (const path of CONTENT_REVALIDATE_PATHS[section]) revalidatePath(path);
+    }
+
+    return NextResponse.json(item, { status: 201 });
+  } catch (err) {
+    return apiErrorFromException(err, `POST /api/content/${section}`);
+  }
 }

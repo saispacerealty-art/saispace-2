@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Eye, EyeOff, Loader2, Lock, ShieldCheck, User } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
+import { parseApiError } from "@/lib/parse-api-error";
 
 const FLOATERS = [
   { size: 160, top: "8%", left: "12%", delay: 0 },
@@ -20,6 +21,7 @@ export function LoginScreen() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("Invalid username or password. Please try again.");
   const [shake, setShake] = useState(0);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -31,7 +33,13 @@ export function LoginScreen() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
-      if (!res.ok) throw new Error("Invalid credentials");
+      if (!res.ok) {
+        const message = await parseApiError(res, "Invalid credentials");
+        setErrorMessage(
+          message.includes("UNAUTHORIZED") ? "Invalid username or password. Please try again." : message
+        );
+        throw new Error(message);
+      }
       router.push(searchParams.get("next") ?? "/admin");
       router.refresh();
     } catch {
@@ -176,7 +184,7 @@ export function LoginScreen() {
                   exit={{ opacity: 0, height: 0 }}
                   className="rounded-lg bg-red-50 px-3 py-2 text-xs font-medium text-red-600"
                 >
-                  Invalid username or password. Please try again.
+                  {errorMessage}
                 </motion.p>
               )}
             </AnimatePresence>

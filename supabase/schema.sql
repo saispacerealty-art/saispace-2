@@ -121,3 +121,12 @@ alter table referrals enable row level security;
 alter table page_copy enable row level security;
 -- No policies are created, so only requests using the service_role key
 -- (server-side only, see src/lib/supabase.ts) can read or write these tables.
+
+-- Storage bucket for admin-uploaded images (property photos, team photos,
+-- category cards, etc. — see src/app/api/upload/route.ts). Public so the
+-- resulting URLs render directly on the public site; uploads still require
+-- an authenticated admin request, since only the server-side service_role
+-- key ever writes to it.
+insert into storage.buckets (id, name, public)
+values ('uploads', 'uploads', true)
+on conflict (id) do nothing;

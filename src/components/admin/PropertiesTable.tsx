@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Pencil, Trash2, Search, Star, AlertCircle } from "lucide-react";
 import type { Property } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
+import { parseApiError } from "@/lib/parse-api-error";
 import { useConfirmDialog } from "./ConfirmDialog";
 
 export function PropertiesTable({ properties }: { properties: Property[] }) {
@@ -31,8 +32,7 @@ export function PropertiesTable({ properties }: { properties: Property[] }) {
     try {
       const res = await fetch(`/api/properties/${id}`, { method: "DELETE" });
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.error ?? `Delete failed (${res.status})`);
+        throw new Error(await parseApiError(res, "Delete failed"));
       }
       router.refresh();
     } catch (err) {
@@ -93,8 +93,6 @@ export function PropertiesTable({ properties }: { properties: Property[] }) {
                     className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
                       p.status === "For Sale"
                         ? "bg-navy-900/5 text-navy-900"
-                        : p.status === "For Rent"
-                        ? "bg-gold-500/10 text-gold-700"
                         : "bg-emerald-50 text-emerald-600"
                     }`}
                   >

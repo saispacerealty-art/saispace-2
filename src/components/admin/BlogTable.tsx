@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Pencil, Trash2, AlertCircle } from "lucide-react";
 import type { BlogPost } from "@/lib/types";
 import { formatDate } from "@/lib/format";
+import { parseApiError } from "@/lib/parse-api-error";
 import { useConfirmDialog } from "./ConfirmDialog";
 
 export function BlogTable({ posts }: { posts: BlogPost[] }) {
@@ -21,8 +22,7 @@ export function BlogTable({ posts }: { posts: BlogPost[] }) {
     try {
       const res = await fetch(`/api/posts/${id}`, { method: "DELETE" });
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.error ?? `Delete failed (${res.status})`);
+        throw new Error(await parseApiError(res, "Delete failed"));
       }
       router.refresh();
     } catch (err) {

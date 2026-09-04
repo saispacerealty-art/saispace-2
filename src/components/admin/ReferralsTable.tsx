@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AlertCircle, ArrowRight, Trash2 } from "lucide-react";
 import type { Referral, ReferralStatus } from "@/lib/types";
 import { formatDateTime } from "@/lib/format";
+import { parseApiError } from "@/lib/parse-api-error";
 import { useConfirmDialog } from "./ConfirmDialog";
 
 const STATUSES: ReferralStatus[] = ["pending", "contacted", "rewarded"];
@@ -32,8 +33,7 @@ export function ReferralsTable({ referrals }: { referrals: Referral[] }) {
         body: JSON.stringify({ status }),
       });
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.error ?? `Update failed (${res.status})`);
+        throw new Error(await parseApiError(res, "Update failed"));
       }
       router.refresh();
     } catch (err) {
@@ -50,8 +50,7 @@ export function ReferralsTable({ referrals }: { referrals: Referral[] }) {
     try {
       const res = await fetch(`/api/referrals/${id}`, { method: "DELETE" });
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.error ?? `Delete failed (${res.status})`);
+        throw new Error(await parseApiError(res, "Delete failed"));
       }
       router.refresh();
     } catch (err) {

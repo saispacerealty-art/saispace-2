@@ -556,7 +556,7 @@ class SupabaseRepository implements DataRepository {
 
   async listProperties(): Promise<Property[]> {
     const { data, error } = await this.db.from("properties").select("*").order("created_at", { ascending: false });
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return (data ?? []).map(rowToProperty);
   }
 
@@ -566,7 +566,7 @@ class SupabaseRepository implements DataRepository {
       .select("*")
       .or(`id.eq.${idOrSlug},slug.eq.${idOrSlug}`)
       .maybeSingle();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return data ? rowToProperty(data) : null;
   }
 
@@ -579,7 +579,7 @@ class SupabaseRepository implements DataRepository {
     }
     const row = { ...propertyToRow(input), id: makeId(), slug };
     const { data, error } = await this.db.from("properties").insert(row).select().single();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return rowToProperty(data);
   }
 
@@ -590,19 +590,19 @@ class SupabaseRepository implements DataRepository {
       .eq("id", id)
       .select()
       .maybeSingle();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return data ? rowToProperty(data) : null;
   }
 
   async deleteProperty(id: string): Promise<boolean> {
     const { data, error } = await this.db.from("properties").delete().eq("id", id).select();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return (data?.length ?? 0) > 0;
   }
 
   async listInquiries(): Promise<Inquiry[]> {
     const { data, error } = await this.db.from("inquiries").select("*").order("created_at", { ascending: false });
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return (data ?? []).map(rowToInquiry);
   }
 
@@ -618,7 +618,7 @@ class SupabaseRepository implements DataRepository {
       status: "new",
     };
     const { data, error } = await this.db.from("inquiries").insert(row).select().single();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return rowToInquiry(data);
   }
 
@@ -630,19 +630,19 @@ class SupabaseRepository implements DataRepository {
     if (input.phone !== undefined) row.phone = input.phone;
     if (input.message !== undefined) row.message = input.message;
     const { data, error } = await this.db.from("inquiries").update(row).eq("id", id).select().maybeSingle();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return data ? rowToInquiry(data) : null;
   }
 
   async deleteInquiry(id: string): Promise<boolean> {
     const { data, error } = await this.db.from("inquiries").delete().eq("id", id).select();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return (data?.length ?? 0) > 0;
   }
 
   async listReferrals(): Promise<Referral[]> {
     const { data, error } = await this.db.from("referrals").select("*").order("created_at", { ascending: false });
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return (data ?? []).map(rowToReferral);
   }
 
@@ -665,7 +665,7 @@ class SupabaseRepository implements DataRepository {
       };
       const { data, error } = await this.db.from("referrals").insert(row).select().single();
       if (!error) return rowToReferral(data);
-      if (error.code !== "23505") throw new Error(error.message); // not a unique-code collision
+      if (error.code !== "23505") throw new Error(`[${error.code}] ${error.message}`); // not a unique-code collision
       code = generateReferralCode();
     }
     throw new Error("Could not generate a unique referral code. Please try again.");
@@ -682,19 +682,19 @@ class SupabaseRepository implements DataRepository {
     if (input.referredEmail !== undefined) row.referred_email = input.referredEmail;
     if (input.message !== undefined) row.message = input.message;
     const { data, error } = await this.db.from("referrals").update(row).eq("id", id).select().maybeSingle();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return data ? rowToReferral(data) : null;
   }
 
   async deleteReferral(id: string): Promise<boolean> {
     const { data, error } = await this.db.from("referrals").delete().eq("id", id).select();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return (data?.length ?? 0) > 0;
   }
 
   async getSettings(): Promise<SiteSettings> {
     const { data, error } = await this.db.from("settings").select("*").eq("id", 1).single();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return rowToSettings(data);
   }
 
@@ -705,13 +705,13 @@ class SupabaseRepository implements DataRepository {
       .eq("id", 1)
       .select()
       .single();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return rowToSettings(data);
   }
 
   async listProjects(): Promise<Project[]> {
     const { data, error } = await this.db.from("projects").select("*").order("created_at", { ascending: false });
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return (data ?? []).map(rowToProject);
   }
 
@@ -721,7 +721,7 @@ class SupabaseRepository implements DataRepository {
       .select("*")
       .or(`id.eq.${idOrSlug},slug.eq.${idOrSlug}`)
       .maybeSingle();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return data ? rowToProject(data) : null;
   }
 
@@ -734,7 +734,7 @@ class SupabaseRepository implements DataRepository {
     }
     const row = { ...projectToRow(input), id: makeId(), slug };
     const { data, error } = await this.db.from("projects").insert(row).select().single();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return rowToProject(data);
   }
 
@@ -745,19 +745,19 @@ class SupabaseRepository implements DataRepository {
       .eq("id", id)
       .select()
       .maybeSingle();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return data ? rowToProject(data) : null;
   }
 
   async deleteProject(id: string): Promise<boolean> {
     const { data, error } = await this.db.from("projects").delete().eq("id", id).select();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return (data?.length ?? 0) > 0;
   }
 
   async listPosts(): Promise<BlogPost[]> {
     const { data, error } = await this.db.from("blog_posts").select("*").order("published_at", { ascending: false });
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return (data ?? []).map(rowToPost);
   }
 
@@ -767,7 +767,7 @@ class SupabaseRepository implements DataRepository {
       .select("*")
       .or(`id.eq.${idOrSlug},slug.eq.${idOrSlug}`)
       .maybeSingle();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return data ? rowToPost(data) : null;
   }
 
@@ -780,7 +780,7 @@ class SupabaseRepository implements DataRepository {
     }
     const row = { ...postToRow(input), id: makeId(), slug };
     const { data, error } = await this.db.from("blog_posts").insert(row).select().single();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return rowToPost(data);
   }
 
@@ -791,13 +791,13 @@ class SupabaseRepository implements DataRepository {
       .eq("id", id)
       .select()
       .maybeSingle();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return data ? rowToPost(data) : null;
   }
 
   async deletePost(id: string): Promise<boolean> {
     const { data, error } = await this.db.from("blog_posts").delete().eq("id", id).select();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return (data?.length ?? 0) > 0;
   }
 
@@ -807,7 +807,7 @@ class SupabaseRepository implements DataRepository {
       .select("id, data")
       .eq("section", section)
       .order("position", { ascending: true });
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return (data ?? []).map((row) => ({ ...(row.data as object), id: row.id }) as ContentMap[K]);
   }
 
@@ -817,7 +817,7 @@ class SupabaseRepository implements DataRepository {
   ): Promise<ContentMap[K]> {
     const id = makeId();
     const { error } = await this.db.from("content_items").insert({ id, section, data: input });
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return { ...input, id } as ContentMap[K] & { id: string };
   }
 
@@ -836,7 +836,7 @@ class SupabaseRepository implements DataRepository {
     if (!existing) return null;
     const merged = { ...(existing.data as object), ...input };
     const { error } = await this.db.from("content_items").update({ data: merged }).eq("id", id);
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return { ...merged, id } as ContentMap[K];
   }
 
@@ -847,13 +847,13 @@ class SupabaseRepository implements DataRepository {
       .eq("id", id)
       .eq("section", section)
       .select();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return (data?.length ?? 0) > 0;
   }
 
   async getPageCopy(): Promise<PageCopy> {
     const { data, error } = await this.db.from("page_copy").select("data").eq("id", 1).single();
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return data.data as PageCopy;
   }
 
@@ -861,7 +861,7 @@ class SupabaseRepository implements DataRepository {
     const current = await this.getPageCopy();
     const merged = { ...current, ...input };
     const { error } = await this.db.from("page_copy").update({ data: merged }).eq("id", 1);
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(`[${error.code}] ${error.message}`);
     return merged;
   }
 }

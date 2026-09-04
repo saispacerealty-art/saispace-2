@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Loader2, Save, Upload, X } from "lucide-react";
 import type { Property, PropertyStatus, PropertyType } from "@/lib/types";
+import { parseApiError } from "@/lib/parse-api-error";
 
-const TYPES: PropertyType[] = ["Residential", "Commercial", "Plot", "Villa", "Apartment"];
-const STATUSES: PropertyStatus[] = ["For Sale", "For Rent", "Sold"];
+const TYPES: PropertyType[] = ["Residential", "Commercial", "Plot", "Villa"];
+const STATUSES: PropertyStatus[] = ["For Sale", "Sold"];
 
 type FormState = {
   title: string;
@@ -30,7 +31,7 @@ type FormState = {
 function toFormState(p?: Property): FormState {
   return {
     title: p?.title ?? "",
-    type: p?.type ?? "Apartment",
+    type: p?.type ?? "Residential",
     status: p?.status ?? "For Sale",
     price: p?.price?.toString() ?? "",
     priceUnit: p?.priceUnit ?? "total",
@@ -70,13 +71,13 @@ export function PropertyForm({ property }: { property?: Property }) {
         const fd = new FormData();
         fd.append("file", file);
         const res = await fetch("/api/upload", { method: "POST", body: fd });
-        if (!res.ok) throw new Error("Upload failed");
+        if (!res.ok) throw new Error(await parseApiError(res, "Upload failed"));
         const data = await res.json();
         uploaded.push(data.url);
       }
       update("images", [...form.images, ...uploaded]);
-    } catch {
-      setError("One or more images failed to upload.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "One or more images failed to upload.");
     } finally {
       setUploading(false);
       e.target.value = "";
@@ -119,11 +120,11 @@ export function PropertyForm({ property }: { property?: Property }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("Save failed");
+      if (!res.ok) throw new Error(await parseApiError(res, "Save failed"));
       router.push("/admin/properties");
       router.refresh();
-    } catch {
-      setError("Something went wrong while saving. Please try again.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong while saving. Please try again.");
       setSaving(false);
     }
   }

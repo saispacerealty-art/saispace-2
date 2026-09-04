@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Loader2, Save, Upload, X } from "lucide-react";
 import type { BlogPost } from "@/lib/types";
+import { parseApiError } from "@/lib/parse-api-error";
 
 export function BlogForm({ post }: { post?: BlogPost }) {
   const router = useRouter();
@@ -33,11 +34,11 @@ export function BlogForm({ post }: { post?: BlogPost }) {
       const fd = new FormData();
       fd.append("file", file);
       const res = await fetch("/api/upload", { method: "POST", body: fd });
-      if (!res.ok) throw new Error("Upload failed");
+      if (!res.ok) throw new Error(await parseApiError(res, "Upload failed"));
       const data = await res.json();
       update("coverImage", data.url);
-    } catch {
-      setError("Image failed to upload.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Image failed to upload.");
     } finally {
       setUploading(false);
       e.target.value = "";
@@ -54,11 +55,11 @@ export function BlogForm({ post }: { post?: BlogPost }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      if (!res.ok) throw new Error("Save failed");
+      if (!res.ok) throw new Error(await parseApiError(res, "Save failed"));
       router.push("/admin/blog");
       router.refresh();
-    } catch {
-      setError("Something went wrong while saving. Please try again.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong while saving. Please try again.");
       setSaving(false);
     }
   }

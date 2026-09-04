@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, Save, CheckCircle2 } from "lucide-react";
+import { AlertCircle, Loader2, Save, CheckCircle2 } from "lucide-react";
 import type { PageCopy } from "@/lib/types";
+import { parseApiError } from "@/lib/parse-api-error";
 
 export function PageCopyEditor({
   copy,
@@ -18,6 +19,7 @@ export function PageCopyEditor({
   const [form, setForm] = useState(copy);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function update(key: keyof PageCopy, value: string) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -27,15 +29,19 @@ export function PageCopyEditor({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
+    setError(null);
     try {
       const subset: Partial<PageCopy> = {};
       for (const f of fields) subset[f.key] = form[f.key];
-      await fetch("/api/page-copy", {
+      const res = await fetch("/api/page-copy", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(subset),
       });
+      if (!res.ok) throw new Error(await parseApiError(res, "Save failed"));
       setSaved(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Save failed. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -70,6 +76,12 @@ export function PageCopyEditor({
           </div>
         ))}
       </div>
+      {error && (
+        <div className="mt-4 flex items-center gap-2 rounded-xl border border-red-100 bg-red-50 px-4 py-2.5 text-sm text-red-700">
+          <AlertCircle className="h-4 w-4 shrink-0" /> {error}
+        </div>
+      )}
+
       <div className="mt-4 flex items-center gap-3">
         <button
           type="submit"
