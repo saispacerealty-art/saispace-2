@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { LiveSync } from "@/components/LiveSync";
+import { PageTransition } from "@/components/motion/PageTransition";
 import { repo } from "@/lib/repository";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -14,7 +15,9 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   return (
     <div className="flex min-h-screen flex-col">
       <Header settings={settings} navLinks={navLinks} />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1">
+        <PageTransition>{children}</PageTransition>
+      </main>
       <Footer settings={settings} navLinks={navLinks} propertyTypes={propertyTypes} />
       <WhatsAppButton phone={settings.whatsapp} />
       <LiveSync />

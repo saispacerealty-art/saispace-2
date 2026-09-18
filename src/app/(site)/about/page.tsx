@@ -3,6 +3,7 @@ import Image from "next/image";
 import { CTASection } from "@/components/home/CTASection";
 import { repo } from "@/lib/repository";
 import { getIcon } from "@/lib/icons";
+import { Reveal, RevealGroup } from "@/components/motion/Reveal";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -29,18 +30,18 @@ export default async function AboutPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-navy-950/60 to-navy-950" />
         </div>
-        <div className="relative mx-auto max-w-4xl px-6 text-center">
+        <Reveal className="relative mx-auto max-w-4xl px-6 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-300">{copy.aboutHeroEyebrow}</p>
           <h1 className="mt-4 font-display text-3xl font-semibold text-white sm:text-5xl">
             {copy.aboutHeroTitle} <span className="gold-gradient-text">{copy.aboutHeroAccent}</span>
           </h1>
           <p className="mt-5 text-sm leading-relaxed text-white/70 sm:text-base">{copy.aboutHeroText}</p>
-        </div>
+        </Reveal>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-          <div className="relative h-80 overflow-hidden rounded-3xl sm:h-[420px]">
+          <Reveal direction="right" className="relative h-80 overflow-hidden rounded-3xl sm:h-[420px]">
             <Image
               src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1000&q=80"
               alt="Our office"
@@ -48,20 +49,20 @@ export default async function AboutPage() {
               sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-cover"
             />
-          </div>
-          <div>
+          </Reveal>
+          <Reveal direction="left" delay={0.1}>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-600">{copy.aboutMissionEyebrow}</p>
             <h2 className="mt-3 font-display text-3xl font-semibold text-navy-900">{copy.aboutMissionTitle}</h2>
             <p className="mt-4 text-sm leading-relaxed text-navy-900/60">{copy.aboutMissionParagraph1}</p>
             <p className="mt-4 text-sm leading-relaxed text-navy-900/60">{copy.aboutMissionParagraph2}</p>
-          </div>
+          </Reveal>
         </div>
 
-        <div className="mt-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <RevealGroup className="mt-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {values.map(({ id, icon, title, description }) => {
             const Icon = getIcon(icon);
             return (
-              <div key={id} className="rounded-2xl border border-navy-900/8 bg-white p-6">
+              <div key={id} className="h-full rounded-2xl border border-navy-900/8 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-navy-900/5">
                 <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-navy-900">
                   <Icon className="h-6 w-6 text-gold-400" />
                 </span>
@@ -70,19 +71,21 @@ export default async function AboutPage() {
               </div>
             );
           })}
-        </div>
+        </RevealGroup>
       </section>
 
       <section className="bg-ivory-100 py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-600">The People</p>
-          <h2 className="mt-3 font-display text-3xl font-semibold text-navy-900 sm:text-4xl">
-            Meet the team
-          </h2>
+          <Reveal>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-600">The People</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold text-navy-900 sm:text-4xl">
+              Meet the team
+            </h2>
+          </Reveal>
 
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <RevealGroup className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {team.map((member) => (
-              <div key={member.id} className="overflow-hidden rounded-2xl bg-white shadow-sm">
+              <div key={member.id} className="overflow-hidden rounded-2xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <div className="relative h-56 w-full">
                   {member.photo ? (
                     <Image
@@ -110,7 +113,7 @@ export default async function AboutPage() {
                 </div>
               </div>
             ))}
-          </div>
+          </RevealGroup>
         </div>
       </section>
 

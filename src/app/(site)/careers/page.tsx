@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ArrowRight, Handshake, LineChart, Mail, Sparkles, Users } from "lucide-react";
 import { repo } from "@/lib/repository";
+import { Reveal, RevealGroup } from "@/components/motion/Reveal";
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -43,24 +44,26 @@ export default async function CareersPage() {
   return (
     <>
       <section className="bg-navy-950 py-16">
-        <div className="mx-auto max-w-7xl px-6">
+        <Reveal className="mx-auto max-w-7xl px-6">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-300">{copy.careersHeroEyebrow}</p>
           <h1 className="mt-3 max-w-2xl font-display text-3xl font-semibold text-white sm:text-4xl">
             {copy.careersHeroTitle}
           </h1>
           <p className="mt-3 max-w-xl text-sm text-white/60">{copy.careersHeroText}</p>
-        </div>
+        </Reveal>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-600">Why Join Us</p>
-        <h2 className="mt-3 font-display text-2xl font-semibold text-navy-900 sm:text-3xl">
-          What it&apos;s like to work here
-        </h2>
+        <Reveal>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-600">Why Join Us</p>
+          <h2 className="mt-3 font-display text-2xl font-semibold text-navy-900 sm:text-3xl">
+            What it&apos;s like to work here
+          </h2>
+        </Reveal>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <RevealGroup className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {PERKS.map(({ icon: Icon, title, description }) => (
-            <div key={title} className="rounded-2xl border border-navy-900/8 bg-white p-6">
+            <div key={title} className="h-full rounded-2xl border border-navy-900/8 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-navy-900/5">
               <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-navy-900">
                 <Icon className="h-6 w-6 text-gold-400" />
               </span>
@@ -68,21 +71,23 @@ export default async function CareersPage() {
               <p className="mt-2 text-sm leading-relaxed text-navy-900/60">{description}</p>
             </div>
           ))}
-        </div>
+        </RevealGroup>
       </section>
 
       <section className="bg-ivory-100 py-16">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-600">Open Roles</p>
-          <h2 className="mt-3 font-display text-2xl font-semibold text-navy-900 sm:text-3xl">
-            Current openings
-          </h2>
+          <Reveal>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-600">Open Roles</p>
+            <h2 className="mt-3 font-display text-2xl font-semibold text-navy-900 sm:text-3xl">
+              Current openings
+            </h2>
+          </Reveal>
 
-          <div className="mt-10 space-y-4">
+          <RevealGroup className="mt-10 space-y-4">
             {openRoles.map((role) => (
               <div
                 key={role.id}
-                className="flex flex-col gap-4 rounded-2xl border border-navy-900/8 bg-white p-6 sm:flex-row sm:items-center sm:justify-between"
+                className="flex flex-col gap-4 rounded-2xl border border-navy-900/8 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:flex-row sm:items-center sm:justify-between"
               >
                 <div>
                   <h3 className="font-display text-lg font-semibold text-navy-900">{role.title}</h3>
@@ -102,12 +107,15 @@ export default async function CareersPage() {
                 No open roles right now — check back soon.
               </p>
             )}
-          </div>
+          </RevealGroup>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-20">
-        <div className="relative overflow-hidden rounded-3xl bg-navy-950 px-8 py-16 text-center sm:px-16">
+        <Reveal
+          direction="none"
+          className="relative overflow-hidden rounded-3xl bg-navy-950 px-8 py-16 text-center sm:px-16"
+        >
           <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-gold-500/20 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-gold-500/10 blur-3xl" />
           <p className="relative text-xs font-semibold uppercase tracking-[0.3em] text-gold-300">Don&apos;t See Your Role?</p>
@@ -120,12 +128,12 @@ export default async function CareersPage() {
           <div className="relative mt-8 flex justify-center">
             <a
               href={generalApplyHref}
-              className="flex items-center gap-2 rounded-full bg-gold-500 px-7 py-3 text-sm font-semibold text-navy-950 transition-colors hover:bg-gold-400"
+              className="flex items-center gap-2 rounded-full bg-gold-500 px-7 py-3 text-sm font-semibold text-navy-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400 hover:shadow-lg hover:shadow-gold-500/20"
             >
               <Mail className="h-4 w-4" /> Email Your Resume
             </a>
           </div>
-        </div>
+        </Reveal>
       </section>
     </>
   );

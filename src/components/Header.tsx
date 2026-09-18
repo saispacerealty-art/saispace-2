@@ -55,11 +55,17 @@ export function Header({ settings, navLinks }: { settings: SiteSettings; navLink
                 key={link.id}
                 href={link.href}
                 className={clsx(
-                  "text-sm font-medium tracking-wide transition-colors",
+                  "group relative text-sm font-medium tracking-wide transition-colors",
                   active ? "text-white" : "text-white/65 hover:text-white"
                 )}
               >
                 {link.label}
+                <span
+                  className={clsx(
+                    "absolute -bottom-1.5 left-0 h-px bg-gold-400 transition-all duration-300",
+                    active ? "w-full" : "w-0 group-hover:w-full"
+                  )}
+                />
               </Link>
             );
           })}
@@ -68,7 +74,7 @@ export function Header({ settings, navLinks }: { settings: SiteSettings; navLink
         <div className="hidden lg:block">
           <Link
             href="/contact"
-            className="rounded-full bg-gold-500 px-5 py-2.5 text-sm font-semibold text-navy-950 transition-colors hover:bg-gold-400"
+            className="rounded-full bg-gold-500 px-5 py-2.5 text-sm font-semibold text-navy-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400 hover:shadow-lg hover:shadow-gold-500/30"
           >
             Enquire Now
           </Link>

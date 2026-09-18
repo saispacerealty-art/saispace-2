@@ -1,22 +1,25 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { PropertyTypeCard } from "@/lib/types";
+import { Reveal, RevealGroup } from "@/components/motion/Reveal";
 
 export function PropertyTypes({ types }: { types: PropertyTypeCard[] }) {
   return (
     <section className="bg-ivory-100 py-20">
       <div className="mx-auto max-w-7xl px-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-600">Browse by Category</p>
-        <h2 className="mt-3 font-display text-3xl font-semibold text-navy-900 sm:text-4xl">
-          Every kind of space, in one place
-        </h2>
+        <Reveal>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-600">Browse by Category</p>
+          <h2 className="mt-3 font-display text-3xl font-semibold text-navy-900 sm:text-4xl">
+            Every kind of space, in one place
+          </h2>
+        </Reveal>
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <RevealGroup className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {types.map((t) => (
             <Link
               key={t.id}
               href={`/properties?type=${t.type}`}
-              className="group relative h-64 overflow-hidden rounded-2xl"
+              className="group relative block h-64 overflow-hidden rounded-2xl"
             >
               <Image
                 src={t.image}
@@ -34,7 +37,7 @@ export function PropertyTypes({ types }: { types: PropertyTypeCard[] }) {
               </div>
             </Link>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );

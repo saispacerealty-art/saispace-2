@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import type { BlogPost } from "@/lib/types";
 import { formatDate } from "@/lib/format";
 import { PLACEHOLDER_LISTING_IMAGE } from "@/lib/placeholders";
+import { Reveal, RevealGroup } from "@/components/motion/Reveal";
 
 export function BlogPreview({ posts }: { posts: BlogPost[] }) {
   if (posts.length === 0) return null;
@@ -11,19 +12,19 @@ export function BlogPreview({ posts }: { posts: BlogPost[] }) {
   return (
     <section className="bg-ivory-100 py-20">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="flex flex-wrap items-end justify-between gap-4">
+        <Reveal className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-600">Insights</p>
             <h2 className="mt-3 font-display text-3xl font-semibold text-navy-900 sm:text-4xl">
               From the Blog
             </h2>
           </div>
-          <Link href="/blog" className="flex items-center gap-1.5 text-sm font-semibold text-navy-900 hover:text-gold-600">
-            Read all articles <ArrowRight className="h-4 w-4" />
+          <Link href="/blog" className="group flex items-center gap-1.5 text-sm font-semibold text-navy-900 hover:text-gold-600">
+            Read all articles <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
-        </div>
+        </Reveal>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-3">
+        <RevealGroup className="mt-10 grid gap-6 sm:grid-cols-3">
           {posts.map((post) => (
             <Link
               key={post.id}
@@ -46,7 +47,7 @@ export function BlogPreview({ posts }: { posts: BlogPost[] }) {
               </div>
             </Link>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );

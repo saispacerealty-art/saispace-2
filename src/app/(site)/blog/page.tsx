@@ -4,6 +4,7 @@ import Link from "next/link";
 import { repo } from "@/lib/repository";
 import { formatDate } from "@/lib/format";
 import { PLACEHOLDER_LISTING_IMAGE } from "@/lib/placeholders";
+import { Reveal, RevealGroup } from "@/components/motion/Reveal";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -16,7 +17,7 @@ export default async function BlogPage() {
   return (
     <>
       <section className="bg-navy-950 py-16">
-        <div className="mx-auto max-w-7xl px-6">
+        <Reveal className="mx-auto max-w-7xl px-6">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-300">Insights</p>
           <h1 className="mt-3 font-display text-3xl font-semibold text-white sm:text-4xl">
             The Sai Space Realty Blog
@@ -24,11 +25,11 @@ export default async function BlogPage() {
           <p className="mt-3 max-w-xl text-sm text-white/60">
             Practical guides and market insights to help you make confident real estate decisions.
           </p>
-        </div>
+        </Reveal>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <RevealGroup className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <Link
               key={post.id}
@@ -54,7 +55,7 @@ export default async function BlogPage() {
               </div>
             </Link>
           ))}
-        </div>
+        </RevealGroup>
         {posts.length === 0 && (
           <p className="py-16 text-center text-sm text-navy-900/50">No articles published yet. Check back soon.</p>
         )}

@@ -7,6 +7,7 @@ import { formatPrice, formatArea, formatDate } from "@/lib/format";
 import { PropertyGallery } from "@/components/PropertyGallery";
 import { InquiryForm } from "@/components/InquiryForm";
 import { PropertyCard } from "@/components/PropertyCard";
+import { RevealGroup } from "@/components/motion/Reveal";
 
 export async function generateMetadata({
   params,
@@ -132,11 +133,11 @@ export default async function PropertyDetailPage({
       {related.length > 0 && (
         <div className="mt-16">
           <h2 className="font-display text-xl font-semibold text-navy-900">More properties in {property.city}</h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <RevealGroup className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((p) => (
               <PropertyCard key={p.id} property={p} />
             ))}
-          </div>
+          </RevealGroup>
         </div>
       )}
     </div>

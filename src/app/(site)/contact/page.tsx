@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Mail, MapPin, Phone, Clock } from "lucide-react";
 import { InquiryForm } from "@/components/InquiryForm";
 import { repo } from "@/lib/repository";
+import { Reveal, RevealGroup } from "@/components/motion/Reveal";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -21,18 +22,18 @@ export default async function ContactPage() {
   return (
     <>
       <section className="bg-navy-950 py-16">
-        <div className="mx-auto max-w-7xl px-6">
+        <Reveal className="mx-auto max-w-7xl px-6">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-300">{copy.contactHeroEyebrow}</p>
           <h1 className="mt-3 font-display text-3xl font-semibold text-white sm:text-4xl">{copy.contactHeroTitle}</h1>
           <p className="mt-3 max-w-xl text-sm text-white/60">{copy.contactHeroText}</p>
-        </div>
+        </Reveal>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <RevealGroup className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {cards.map(({ icon: Icon, label, value, href }) => {
             const content = (
-              <div className="h-full rounded-2xl border border-navy-900/8 bg-white p-6">
+              <div className="h-full rounded-2xl border border-navy-900/8 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-navy-900/5">
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-navy-900">
                   <Icon className="h-5 w-5 text-gold-400" />
                 </span>
@@ -46,9 +47,9 @@ export default async function ContactPage() {
               <div key={label}>{content}</div>
             );
           })}
-        </div>
+        </RevealGroup>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-5">
+        <Reveal className="mt-12 grid gap-8 lg:grid-cols-5">
           <div className="rounded-2xl border border-navy-900/8 bg-white p-8 lg:col-span-2">
             <h2 className="font-display text-xl font-semibold text-navy-900">Send us a message</h2>
             <p className="mt-1 text-sm text-navy-900/60">
@@ -68,7 +69,7 @@ export default async function ContactPage() {
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
-        </div>
+        </Reveal>
       </section>
     </>
   );

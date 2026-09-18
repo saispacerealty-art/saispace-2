@@ -4,6 +4,7 @@ import { PropertyCard } from "@/components/PropertyCard";
 import { PropertiesFilterBar } from "@/components/PropertiesFilterBar";
 import { repo } from "@/lib/repository";
 import { SearchX } from "lucide-react";
+import { Reveal, RevealGroup } from "@/components/motion/Reveal";
 
 export const metadata: Metadata = {
   title: "Properties",
@@ -39,7 +40,7 @@ export default async function PropertiesPage({
   return (
     <>
       <section className="bg-navy-950 py-16">
-        <div className="mx-auto max-w-7xl px-6">
+        <Reveal className="mx-auto max-w-7xl px-6">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-300">Listings</p>
           <h1 className="mt-3 font-display text-3xl font-semibold text-white sm:text-4xl">
             Find Your Next Property
@@ -47,7 +48,7 @@ export default async function PropertiesPage({
           <p className="mt-3 max-w-xl text-sm text-white/60">
             {properties.length} propert{properties.length === 1 ? "y" : "ies"} matching your search.
           </p>
-        </div>
+        </Reveal>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-12">
@@ -64,11 +65,11 @@ export default async function PropertiesPage({
             </p>
           </div>
         ) : (
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <RevealGroup className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {properties.map((property) => (
               <PropertyCard key={property.id} property={property} />
             ))}
-          </div>
+          </RevealGroup>
         )}
       </section>
     </>

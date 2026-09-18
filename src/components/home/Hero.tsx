@@ -3,8 +3,19 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Search } from "lucide-react";
+import { motion, type Variants } from "framer-motion";
 
 const TYPES = ["Any Type", "Residential", "Villa", "Commercial", "Plot"];
+
+const container: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+};
+
+const item: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+};
 
 export function Hero({
   stats,
@@ -41,18 +52,29 @@ export function Hero({
         <div className="absolute inset-0 bg-gradient-to-b from-navy-950/45 via-navy-950/35 to-navy-950" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-20 sm:pt-28 md:pb-32">
-        <p className="animate-fade-up text-xs font-semibold uppercase tracking-[0.35em] text-gold-300">
+      <motion.div
+        className="relative mx-auto max-w-7xl px-6 pb-24 pt-20 sm:pt-28 md:pb-32"
+        initial="hidden"
+        animate="visible"
+        variants={container}
+      >
+        <motion.p variants={item} className="text-xs font-semibold uppercase tracking-[0.35em] text-gold-300">
           {copy.eyebrow}
-        </p>
-        <h1 className="animate-fade-up mt-5 max-w-3xl font-display text-4xl font-semibold leading-tight text-white sm:text-5xl md:text-6xl">
+        </motion.p>
+        <motion.h1
+          variants={item}
+          className="mt-5 max-w-3xl font-display text-4xl font-semibold leading-tight text-white sm:text-5xl md:text-6xl"
+        >
           {copy.title} <span className="gold-gradient-text">{copy.accent}</span>
-        </h1>
-        <p className="animate-fade-up mt-6 max-w-xl text-base text-white/70 sm:text-lg">{copy.tagline}</p>
+        </motion.h1>
+        <motion.p variants={item} className="mt-6 max-w-xl text-base text-white/70 sm:text-lg">
+          {copy.tagline}
+        </motion.p>
 
-        <form
+        <motion.form
+          variants={item}
           onSubmit={handleSearch}
-          className="animate-fade-up mt-10 flex w-full max-w-2xl flex-col gap-3 rounded-2xl bg-white/95 p-3 shadow-2xl shadow-black/30 backdrop-blur sm:flex-row sm:items-center"
+          className="mt-10 flex w-full max-w-2xl flex-col gap-3 rounded-2xl bg-white/95 p-3 shadow-2xl shadow-black/30 backdrop-blur sm:flex-row sm:items-center"
         >
           <div className="flex flex-1 items-center gap-2 px-3">
             <Search className="h-5 w-5 text-navy-900/40" />
@@ -76,13 +98,13 @@ export function Hero({
           </select>
           <button
             type="submit"
-            className="rounded-xl bg-navy-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-navy-800"
+            className="rounded-xl bg-navy-900 px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-navy-800"
           >
             Search Properties
           </button>
-        </form>
+        </motion.form>
 
-        <dl className="animate-fade-up mt-16 grid grid-cols-2 gap-8 sm:grid-cols-4">
+        <motion.dl variants={item} className="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-4">
           {[
             [`${stats.properties}+`, "Properties Listed"],
             [`${stats.cities}`, "Cities Covered"],
@@ -94,8 +116,8 @@ export function Hero({
               <dd className="mt-1 text-xs uppercase tracking-wide text-white/50">{label}</dd>
             </div>
           ))}
-        </dl>
-      </div>
+        </motion.dl>
+      </motion.div>
     </section>
   );
 }

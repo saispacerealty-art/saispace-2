@@ -1,17 +1,20 @@
 import { Star } from "lucide-react";
 import type { Testimonial } from "@/lib/types";
+import { Reveal, RevealGroup } from "@/components/motion/Reveal";
 
 export function Testimonials({ testimonials }: { testimonials: Testimonial[] }) {
   return (
     <section className="mx-auto max-w-7xl px-6 py-20">
-      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-600">Client Stories</p>
-      <h2 className="mt-3 font-display text-3xl font-semibold text-navy-900 sm:text-4xl">
-        Trusted by families and businesses alike
-      </h2>
+      <Reveal>
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-600">Client Stories</p>
+        <h2 className="mt-3 font-display text-3xl font-semibold text-navy-900 sm:text-4xl">
+          Trusted by families and businesses alike
+        </h2>
+      </Reveal>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-3">
+      <RevealGroup className="mt-12 grid gap-6 lg:grid-cols-3">
         {testimonials.map((t) => (
-          <figure key={t.id} className="flex flex-col rounded-2xl bg-navy-900 p-7 text-white">
+          <figure key={t.id} className="flex h-full flex-col rounded-2xl bg-navy-900 p-7 text-white transition-transform duration-300 hover:-translate-y-1">
             <div className="flex gap-1 text-gold-400">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="h-4 w-4 fill-current" />
@@ -26,7 +29,7 @@ export function Testimonials({ testimonials }: { testimonials: Testimonial[] }) 
             </figcaption>
           </figure>
         ))}
-      </div>
+      </RevealGroup>
     </section>
   );
 }
